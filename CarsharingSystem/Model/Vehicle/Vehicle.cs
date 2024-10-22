@@ -13,4 +13,6 @@ public class Vehicle
 
     public bool IsElectric => ElectricVehicleInfo != null;
     public bool IsGas => GasVehicleInfo != null;
+
+    public Offer? Offer { get; set; }
 }
