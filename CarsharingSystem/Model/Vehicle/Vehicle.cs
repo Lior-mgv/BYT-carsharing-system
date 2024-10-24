@@ -1,6 +1,8 @@
-﻿namespace CarsharingSystem.Model;
+﻿using CarsharingSystem.Abstractions;
 
-public class Vehicle
+namespace CarsharingSystem.Model;
+
+public abstract class Vehicle : ClassExtent<Vehicle>
 {
     public string Model { get; set; }
     public int NumOfSeats { get; set; }

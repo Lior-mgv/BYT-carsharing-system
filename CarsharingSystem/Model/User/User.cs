@@ -1,6 +1,8 @@
-﻿namespace CarsharingSystem.Model;
+﻿using CarsharingSystem.Abstractions;
 
-public class User
+namespace CarsharingSystem.Model;
+
+public class User : ClassExtent<User>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
@@ -12,5 +14,4 @@ public class User
     
     public bool IsRenter => RenterInfo != null;
     public bool IsHost => HostInfo != null;
-    
 }
