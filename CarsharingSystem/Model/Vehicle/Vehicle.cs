@@ -2,7 +2,7 @@
 
 namespace CarsharingSystem.Model;
 
-public abstract class Vehicle : ClassExtent<Vehicle>
+public class Vehicle : ClassExtent<Vehicle>
 {
     public string Model { get; set; }
     public int NumOfSeats { get; set; }
@@ -17,4 +17,5 @@ public abstract class Vehicle : ClassExtent<Vehicle>
     public bool IsGas => GasVehicleInfo != null;
 
     public Offer? Offer { get; set; }
+    public Host Host { get; set; }
 }

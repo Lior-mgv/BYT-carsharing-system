@@ -6,7 +6,8 @@ public static class PersistenceManager
 {
     private static JsonSerializerOptions options = new()
     {
-        WriteIndented = true
+        WriteIndented = true,
+        ReferenceHandler = new MyReferenceHandler()
     };
 
     public static void Save<T>(IEnumerable<T> objects, string fileName)
