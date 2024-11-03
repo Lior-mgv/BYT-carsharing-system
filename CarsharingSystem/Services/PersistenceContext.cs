@@ -2,28 +2,19 @@
 
 namespace CarsharingSystem.Services;
 
-public class PersistenceContext
+public static class PersistenceContext
 {
     public static void SaveContext()
     {
-        PersistenceManager.Save(User.GetObjects(), nameof(User) + ".json");
-        PersistenceManager.Save(Vehicle.GetObjects(), nameof(Vehicle) + ".json");   
-        PersistenceManager.Save(Offer.GetObjects(), nameof(Offer) + ".json");
+        User.Save();
+        Vehicle.Save();
+        Offer.Save();
     }
 
     public static void LoadContext()
     {
-        LoadExtent<User>();
-        LoadExtent<Vehicle>();
-        LoadExtent<Offer>();
-    }
-
-    private static void LoadExtent<T>()
-    {
-        var filename = typeof(T).Name + ".json";
-        if (File.Exists(filename))
-        {
-            PersistenceManager.Load<T>(filename);
-        }
+        User.Load();
+        Vehicle.Load();
+        Offer.Load();
     }
 }
