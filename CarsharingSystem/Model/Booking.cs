@@ -12,7 +12,7 @@ public class Booking
     [Required]
     public DateTime EndDate { get; set; }
     [Range(1,double.MaxValue)]
-    public decimal TotalPrice { get; set; }
+    public decimal TotalPrice { get; private set; }
     public BookingStatus Status { get; set; }
     [Required]
     public Renter Renter { get; set; }
@@ -27,6 +27,14 @@ public class Booking
         Status = status;
         Renter = renter;
         Offer = offer;
+        if (startDate == default || endDate == default)
+        {
+            throw new ValidationException("Start and end date must be provided");
+        }
+        if (endDate < startDate)
+        {
+            throw new ValidationException("End date must be after start date");
+        }
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
     }
