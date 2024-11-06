@@ -1,33 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using CarsharingSystem.Abstractions;
 
 namespace CarsharingSystem.Model;
 
-public class Vehicle : ClassExtent<Vehicle>
+[JsonDerivedType(typeof(BoxVan), 0)]
+[JsonDerivedType(typeof(Truck), 1)]
+[JsonDerivedType(typeof(PassengerCar), 2)]
+public abstract class Vehicle
 {
-    [JsonConstructor]
-    private Vehicle()
-    {
-    }
-
-    public Vehicle(string model, int numOfSeats, int numOfDoors, TransmissionType transmissionType, 
-        ElectricVehicle? electricVehicleInfo, GasVehicle? gasVehicleInfo, Offer? offer, Host host)
-    {
-        Model = model;
-        NumOfSeats = numOfSeats;
-        NumOfDoors = numOfDoors;
-        TransmissionType = transmissionType;
-        ElectricVehicleInfo = electricVehicleInfo;
-        GasVehicleInfo = gasVehicleInfo;
-        Offer = offer;
-        Host = host;
-        if (GetType() == typeof(Vehicle))
-        {
-            _objects.Add(DeepCopy());
-        }
-    }
-
     [Required]
     public string Model { get; set; }
     [Range(1,int.MaxValue)]
@@ -47,4 +27,22 @@ public class Vehicle : ClassExtent<Vehicle>
     public Offer? Offer { get; set; }
     [Required]
     public Host Host { get; set; }
+    
+    [JsonConstructor]    
+    protected Vehicle()
+    {
+    }
+    
+    protected Vehicle(string model, int numOfSeats, int numOfDoors, TransmissionType transmissionType, 
+        ElectricVehicle? electricVehicleInfo, GasVehicle? gasVehicleInfo, Offer? offer, Host host)
+    {
+        Model = model;
+        NumOfSeats = numOfSeats;
+        NumOfDoors = numOfDoors;
+        TransmissionType = transmissionType;
+        ElectricVehicleInfo = electricVehicleInfo;
+        GasVehicleInfo = gasVehicleInfo;
+        Offer = offer;
+        Host = host;
+    }
 }

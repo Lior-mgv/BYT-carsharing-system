@@ -7,17 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 var app = builder.Build();
 PersistenceContext.LoadContext();
 
-var users = User.GetObjects();
-var vehicles = Vehicle.GetObjects();
-var offers = Offer.GetObjects();
+var users = PersistenceContext.GetExtent<User>();
+var boxVans = PersistenceContext.GetExtent<BoxVan>();
+var trucks = PersistenceContext.GetExtent<Truck>();
+var offers = PersistenceContext.GetExtent<Offer>();
 
 var hostInfo1 = new Host();
 var renterInfo1 = new Renter { DrivingLicenseNumber = "DL22222222" };
 
 var user1 = new User(
-    firstName: null,
-    lastName: "",
-    email: "email1",
+    firstName: "firstname1",
+    lastName: "lastname1",
+    email: "email1@gmail.com",
     phoneNumber: "1233",
     hostInfo: hostInfo1,
     renterInfo: renterInfo1
@@ -31,6 +32,10 @@ var user2 = new User(
     hostInfo: null,
     renterInfo: null
 );
+//
+// var usersToSave = new List<User>() { user1, user2 };
+// PersistenceManager.Save(usersToSave, "User.json");
+// var deserialized = PersistenceManager.Load<User>()
 
 user2.Email = "changed email";
 
@@ -38,19 +43,20 @@ var electricVehicleInfo1 = new ElectricVehicle { BatteryCapacity = 100, Charging
 var electricVehicleInfo2 = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
 
 // Create vehicle1 using the public constructor
-Vehicle vehicle1 = new Vehicle(
+BoxVan vehicle1 = new BoxVan(
     model: "Tesla Model S",
     numOfSeats: 5,
     numOfDoors: 4,
     transmissionType: TransmissionType.Automatic,
     electricVehicleInfo: electricVehicleInfo1,
-    gasVehicleInfo: null, // Assuming no GasVehicle info is needed
-    offer: null, // Offer will be set separately
-    host: user1.HostInfo
+    gasVehicleInfo: null,
+    offer: null,
+    host: user1.HostInfo,
+    boxVolume: 10
 );
 
 // Create vehicle2 using the public constructor
-Vehicle vehicle2 = new BoxVan(
+Truck vehicle2 = new Truck(
     model: "Toyota Corolla",
     numOfSeats: 5,
     numOfDoors: 4,
@@ -59,8 +65,11 @@ Vehicle vehicle2 = new BoxVan(
     gasVehicleInfo: null, // Assuming no GasVehicle info is needed
     offer: null, // Offer will be set separately
     host: user1.HostInfo,
-    boxVolume: 15
+    bedLength: 15
 );
+
+hostInfo1.Vehicles.Add(vehicle1);
+hostInfo1.Vehicles.Add(vehicle2);
 
 // Create offer1 using the public constructor
 Offer offer1 = new Offer(

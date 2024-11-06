@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections;
+using System.Text.Json;
 
 namespace CarsharingSystem.Services;
 
@@ -10,7 +11,7 @@ public static class PersistenceManager
         ReferenceHandler = new MyReferenceHandler()
     };
 
-    public static void Save<T>(IEnumerable<T> objects, string fileName)
+    public static void Save(IEnumerable objects, string fileName)
     {
         using var fileStream = File.Create(fileName);
         JsonSerializer.Serialize(fileStream, objects, options);

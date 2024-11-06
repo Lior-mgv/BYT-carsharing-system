@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
+[JsonDerivedType(typeof(Truck), 1)]
 public class Truck : Vehicle
 {
     [Range(1, double.MaxValue)]
@@ -12,5 +15,12 @@ public class Truck : Vehicle
         : base(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host)
     {
         BedLength = bedLength;
+        ValidationHelpers.ValidateObject(this);
+        PersistenceContext.Add(this);
+    }
+
+    [JsonConstructor]
+    private Truck()
+    {
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
@@ -15,4 +17,20 @@ public class UserReview
 
     [Required]
     public User Reviewee { get; set; } = null!;
+
+    public UserReview(DateTime date, double score, string comment, User reviewer, User reviewee)
+    {
+        Date = date;
+        Score = score;
+        Comment = comment;
+        Reviewer = reviewer;
+        Reviewee = reviewee;
+        ValidationHelpers.ValidateObject(this);
+        PersistenceContext.Add(this);
+    }
+
+    [JsonConstructor]
+    private UserReview()
+    {
+    }
 }
