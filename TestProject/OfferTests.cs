@@ -86,7 +86,7 @@ namespace TestProject
             var vehicle = new PassengerCar();
             var offer = new Offer(100, "Description", 18, vehicle);
 
-            var booking = new Booking(DateTime.Now, DateTime.Now.AddDays(3), 300m, BookingStatus.Pending, new Renter(), offer);
+            var booking = new Booking(DateTime.Now, DateTime.Now.AddDays(3), BookingStatus.Pending, new Renter(), offer);
             offer.Bookings.Add(booking);
 
             Assert.Contains(booking, offer.Bookings);

@@ -6,4 +6,16 @@
         <ImplicitUsings>enable</ImplicitUsings>
     </PropertyGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="persistence\Address.json" />
+      <_ContentIncludedByDefault Remove="persistence\Booking.json" />
+      <_ContentIncludedByDefault Remove="persistence\BoxVan.json" />
+      <_ContentIncludedByDefault Remove="persistence\Offer.json" />
+      <_ContentIncludedByDefault Remove="persistence\OfferReview.json" />
+      <_ContentIncludedByDefault Remove="persistence\PassengerCar.json" />
+      <_ContentIncludedByDefault Remove="persistence\Truck.json" />
+      <_ContentIncludedByDefault Remove="persistence\User.json" />
+      <_ContentIncludedByDefault Remove="persistence\UserReview.json" />
+    </ItemGroup>
+
 </Project>

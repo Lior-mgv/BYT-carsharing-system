@@ -5,7 +5,7 @@ using Host = CarsharingSystem.Model.Host;
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
-PersistenceContext.LoadContext();
+ PersistenceContext.LoadContext();
 
 var users = PersistenceContext.GetExtent<User>();
 var boxVans = PersistenceContext.GetExtent<BoxVan>();
@@ -24,20 +24,29 @@ var user1 = new User(
     renterInfo: renterInfo1
 );
 
-var user2 = new User(
-    firstName: "firstname3",
-    lastName: "lastname3",
-    email: "email2@gmail.com",
-    phoneNumber: "1563626232",
-    hostInfo: null,
-    renterInfo: null
+// var user2 = new User(
+//     firstName: "firstname3",
+//     lastName: "lastname3",
+//     email: "email2@gmail.com",
+//     phoneNumber: "1563626232",
+//     hostInfo: null,
+//     renterInfo: null
+// );
+
+var user4 = new User(
+    firstName: "firstname4",
+    lastName: "lastname4",
+    email: "email4@gmail.com",
+    phoneNumber: "1233",
+    hostInfo: hostInfo1,
+    renterInfo: renterInfo1
 );
 //
 // var usersToSave = new List<User>() { user1, user2 };
 // PersistenceManager.Save(usersToSave, "User.json");
 // var deserialized = PersistenceManager.Load<User>()
 
-user2.Email = "changed email";
+user4.Email = "changed email";
 
 var electricVehicleInfo1 = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
 var electricVehicleInfo2 = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
