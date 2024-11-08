@@ -27,6 +27,11 @@ public class UserReview
         Reviewee = reviewee;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
+        
+        if (Date == default)
+        {
+            throw new ValidationException("Date is not set.");
+        }
     }
 
     [JsonConstructor]

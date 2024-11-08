@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using CarsharingSystem.Model;
-using CarsharingSystem.Services;
-using NUnit.Framework;
+
 
 namespace TestProject
 {

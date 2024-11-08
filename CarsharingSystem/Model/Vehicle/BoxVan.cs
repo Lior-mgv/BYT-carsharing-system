@@ -15,6 +15,10 @@ public class BoxVan : Vehicle
         : base(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host)
     {
         BoxVolume = boxVolume;
+        if (TransmissionType == default)
+        {
+            throw new ValidationException("TransmissionType is required");
+        }
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
     }

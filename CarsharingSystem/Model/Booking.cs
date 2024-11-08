@@ -11,13 +11,23 @@ public class Booking
     public DateTime StartDate { get; set; }
     [Required]
     public DateTime EndDate { get; set; }
-    [Range(1,double.MaxValue)]
-    public decimal TotalPrice => Offer.PricePerDay * (EndDate - StartDate).Days + PlatformFee;
+    //[Range(1,double.MaxValue)]
+    //public decimal TotalPrice => Offer.PricePerDay * (EndDate - StartDate).Days + PlatformFee;
     public BookingStatus Status { get; set; }
     [Required]
     public Renter Renter { get; set; }
     [Required]
     public Offer Offer { get; set; }
+    
+    public decimal TotalPrice
+    {
+        get
+        {
+            if (Offer == null) throw new ValidationException("Offer is not set.");
+            var days = (EndDate - StartDate).Days;
+            return (Offer.PricePerDay * days) + PlatformFee;
+        }
+    }
 
     public Booking(DateTime startDate, DateTime endDate, BookingStatus status, Renter renter, Offer offer)
     {

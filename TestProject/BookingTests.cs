@@ -1,8 +1,6 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using CarsharingSystem.Model;
-using CarsharingSystem.Services;
-using NUnit.Framework;
+
 
 namespace TestProject
 {
@@ -53,7 +51,6 @@ namespace TestProject
         {
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(-3); // End date before start date
-            var totalPrice = 100m;
             var status = BookingStatus.Pending;
             var renter = new Renter();
             var vehicle = new PassengerCar();
@@ -83,6 +80,20 @@ namespace TestProject
 
             var expectedTotalPrice = (pricePerDay * 4) + Booking.PlatformFee;
             Assert.That(booking.TotalPrice, Is.EqualTo(expectedTotalPrice));
+        }
+        
+
+        [Test]
+        public void TotalPrice_ShouldThrowValidationException_WhenEndDateBeforeStartDate()
+        {
+            var startDate = DateTime.Now;
+            var endDate = startDate.AddDays(-3); // End date before start date
+            var status = BookingStatus.Pending;
+            var renter = new Renter();
+            var vehicle = new PassengerCar();
+            var offer = new Offer(100.0m, "Description", 18, vehicle);
+
+            Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, offer));
         }
     }
 }

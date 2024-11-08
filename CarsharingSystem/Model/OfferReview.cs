@@ -38,6 +38,11 @@ public class OfferReview
         Offer = offer;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
+        
+        if (Date == default)
+        {
+            throw new ValidationException("Date is not set.");
+        }
     }
 
     [JsonConstructor]

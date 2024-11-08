@@ -15,12 +15,17 @@ public class Truck : Vehicle
         : base(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host)
     {
         BedLength = bedLength;
+        if (TransmissionType == default)
+        {
+            throw new ValidationException("TransmissionType is required");
+        }
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
     }
 
     [JsonConstructor]
-    private Truck()
+    public Truck()
     {
     }
+    
 }
