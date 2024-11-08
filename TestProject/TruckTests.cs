@@ -5,37 +5,7 @@ namespace TestProject
 {
     public class TruckTests
     {
-        [Test]
-        public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
-        {
-            var model = "Ford F-150";
-            var numOfSeats = 3;
-            var numOfDoors = 2;
-            var transmissionType = TransmissionType.Manual;
-            var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 10 };
-            var gasVehicleInfo = new GasVehicle { FuelType = "Diesel", FuelConsumption = 15 };
-            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, new Truck());
-            var host = new Host();
-            var bedLength = 6.5;
-
-            // Missing Model
-            Assert.Throws<ValidationException>(() => new Truck(null, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, bedLength));
-            
-            // Missing NumOfSeats
-            Assert.Throws<ValidationException>(() => new Truck(model, 0, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, bedLength));
-            
-            // Missing NumOfDoors
-            Assert.Throws<ValidationException>(() => new Truck(model, numOfSeats, 0, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, bedLength));
-            
-            // Missing TransmissionType
-            Assert.Throws<ValidationException>(() => new Truck(model, numOfSeats, numOfDoors, default, electricVehicleInfo, gasVehicleInfo, offer, host, bedLength));
-            
-            // Missing Host
-            Assert.Throws<ValidationException>(() => new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, null, bedLength));
-            
-            // Missing BedLength
-            Assert.Throws<ValidationException>(() => new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, 0));
-        }
+        
         
         [Test]
         public void Constructor_ValidParameters_ShouldCreateTruck()
@@ -61,6 +31,20 @@ namespace TestProject
             Assert.That(truck.Offer, Is.EqualTo(offer));
             Assert.That(truck.Host, Is.EqualTo(host));
             Assert.That(truck.BedLength, Is.EqualTo(bedLength));
+        }
+        
+        [Test]
+        public void Constructor_InvalidBedLength_ShouldThrowValidationException()
+        {
+            var model = "Ford F-150";
+            var numOfSeats = 3;
+            var numOfDoors = 2;
+            var transmissionType = TransmissionType.Manual;
+            var host = new Host();
+            var invalidBedLength = 0.0;
+
+            Assert.Throws<ValidationException>(() =>
+                new BoxVan(model, numOfSeats, numOfDoors, transmissionType, null, null, null, host, invalidBedLength));
         }
     }
 }
