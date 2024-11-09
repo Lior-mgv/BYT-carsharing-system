@@ -11,12 +11,6 @@ public class PassengerCar : Vehicle
         ElectricVehicle? electricVehicleInfo, GasVehicle? gasVehicleInfo, Offer? offer, Host host)
         : base(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host)
     {
-        
-        if (TransmissionType == default)
-        {
-            throw new ValidationException("TransmissionType is required");
-        }
-
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
     }

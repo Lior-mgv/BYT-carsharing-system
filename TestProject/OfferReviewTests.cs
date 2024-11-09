@@ -9,10 +9,10 @@ namespace TestProject
         public void Constructor_ValidParameters_ShouldCreateOfferReview()
         {
             var date = DateTime.Now;
-            var cleanlinessScore = 4.0;
-            var maintenanceScore = 5.0;
-            var convenienceScore = 3.0;
-            var communicationScore = 4.0;
+            var cleanlinessScore = 4;
+            var maintenanceScore = 5;
+            var convenienceScore = 3;
+            var communicationScore = 4;
             var comment = "Great experience!";
             var renter = new Renter();
             var vehicle = new PassengerCar();

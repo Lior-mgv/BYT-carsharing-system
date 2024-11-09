@@ -6,7 +6,6 @@ namespace TestProject
     public class TruckTests
     {
         
-        
         [Test]
         public void Constructor_ValidParameters_ShouldCreateTruck()
         {
@@ -16,11 +15,12 @@ namespace TestProject
             var transmissionType = TransmissionType.Manual;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 10 };
             var gasVehicleInfo = new GasVehicle { FuelType = "Diesel", FuelConsumption = 15 };
-            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, new Truck());
             var host = new Host();
             var bedLength = 6.5;
 
-            var truck = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, bedLength);
+            var truck = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, null, host, bedLength);
+            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, truck);
+            truck.Offer = offer;
 
             Assert.That(truck.Model, Is.EqualTo(model));
             Assert.That(truck.NumOfSeats, Is.EqualTo(numOfSeats));

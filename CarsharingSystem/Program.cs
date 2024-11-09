@@ -2,10 +2,7 @@ using CarsharingSystem.Model;
 using CarsharingSystem.Services;
 using Host = CarsharingSystem.Model.Host;
 
-var builder = WebApplication.CreateBuilder(args);
-
-var app = builder.Build();
- PersistenceContext.LoadContext();
+PersistenceContext.LoadContext();
 
 var users = PersistenceContext.GetExtent<User>();
 var boxVans = PersistenceContext.GetExtent<BoxVan>();

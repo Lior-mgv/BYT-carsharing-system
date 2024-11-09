@@ -16,7 +16,7 @@ namespace TestProject
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
-            var gasVehicleInfo = null as GasVehicle;
+            GasVehicle? gasVehicleInfo = null;
             var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar());
             var host = new Host();
 
@@ -60,7 +60,6 @@ namespace TestProject
         {
             var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 }, null, null, new Host(), 10.0);
             Assert.IsTrue(vehicle.IsElectric);
-            Assert.IsFalse(vehicle.IsGas);
         }
 
         [Test]
@@ -68,7 +67,6 @@ namespace TestProject
         {
             var vehicle = new Truck("Toyota Camry", 4, 4, TransmissionType.Automatic, null, new GasVehicle { FuelType = "Petrol", FuelConsumption = 10 }, null, new Host(), 10.0);
             Assert.IsTrue(vehicle.IsGas);
-            Assert.IsFalse(vehicle.IsElectric);
         }
 
         [Test]

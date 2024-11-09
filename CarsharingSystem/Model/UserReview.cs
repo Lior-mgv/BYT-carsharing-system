@@ -7,7 +7,7 @@ namespace CarsharingSystem.Model;
 public class UserReview
 {
     [Range(1,5)]
-    public double Score { get; set; }
+    public int Score { get; set; }
     [Required(AllowEmptyStrings = true)] 
     public string Comment { get; set; } = null!;
     [Required]
@@ -18,7 +18,7 @@ public class UserReview
     [Required]
     public User Reviewee { get; set; } = null!;
 
-    public UserReview(DateTime date, double score, string comment, User reviewer, User reviewee)
+    public UserReview(DateTime date, int score, string comment, User reviewer, User reviewee)
     {
         Date = date;
         Score = score;

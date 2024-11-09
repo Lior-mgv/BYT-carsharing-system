@@ -7,7 +7,7 @@ namespace CarsharingSystem.Services;
 public static class PersistenceContext
 {
     private static readonly string Prefix = Environment.CurrentDirectory + @"\persistence\";
-    private static readonly OrderedDictionary TypeToExtentMap = new()
+    private static readonly Dictionary<Type, IList> TypeToExtentMap = new()
     {
         {typeof(User), new List<User>()},
         {typeof(BoxVan), new List<BoxVan>()},
@@ -22,40 +22,44 @@ public static class PersistenceContext
 
     public static List<T>? GetExtent<T>()
     {
-        return (List<T>?)TypeToExtentMap[typeof(T)];
+        return TypeToExtentMap.TryGetValue(typeof(T), out var list) ? new List<T>((IList<T>)list) : null;
     }
 
     public static void SaveContext()
     {
         Directory.CreateDirectory(Prefix);
-        foreach (DictionaryEntry pair in TypeToExtentMap)
+
+        foreach (var key in TypeToExtentMap.Keys.OrderBy(type => type.Name))
         {
-            PersistenceManager.Save((IEnumerable)pair.Value!, Prefix + ((Type)pair.Key).Name + ".json");
+            PersistenceManager.Save(TypeToExtentMap[key], Prefix + key.Name + ".json");
         }
     }
 
     public static void LoadContext()
     {
         Directory.CreateDirectory(Prefix);
-        foreach (DictionaryEntry pair in TypeToExtentMap)
+        foreach (var key in TypeToExtentMap.Keys.OrderBy(type => type.Name))
         {
-            var fileName = Prefix + ((Type)pair.Key).Name + ".json";
+            var fileName = Prefix + key.Name + ".json";
             if (!File.Exists(fileName)) continue;
-            var typeParam = pair.Value!.GetType().GetGenericArguments()[0];
             var deserializedList = typeof(PersistenceManager)
                 .GetMethod("Load")!
-                .MakeGenericMethod(typeParam)
+                .MakeGenericMethod(key)
                 .Invoke(null, [fileName]);
             if (deserializedList == null) return;
             foreach (var o in (IEnumerable)deserializedList)
             {
-                ((IList)TypeToExtentMap[typeParam]!).Add(o);
+                TypeToExtentMap[key].Add(o);
             }
         } 
     }
 
     public static void Add<T>(T obj)
     {
-        ((IList?)TypeToExtentMap[typeof(T)])?.Add(obj);
+        if (!TypeToExtentMap.TryGetValue(typeof(T), out var list)) return;
+        if (!list.Contains(obj))
+        {
+            list.Add(obj);
+        }
     }
 }

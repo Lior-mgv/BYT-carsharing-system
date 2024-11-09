@@ -10,7 +10,7 @@ namespace TestProject
         public void Constructor_ValidParameters_ShouldCreateUserReview()
         {
             var date = DateTime.Now;
-            var score = 4.5;
+            var score = 4;
             var comment = "Excellent user!";
             var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
@@ -32,10 +32,10 @@ namespace TestProject
             var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
 
             // Missing Reviewee
-            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", reviewer, null));
+            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", reviewer, null!));
 
             // Missing Reviewer
-            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", null, reviewee));
+            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", null!, reviewee));
 
             // Missing Date
             Assert.Throws<ValidationException>(() => new UserReview(default, 4, "Good user", reviewer, reviewee));

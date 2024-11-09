@@ -7,26 +7,26 @@ namespace CarsharingSystem.Model;
 public class OfferReview
 {
     [Range(1,5)]
-    public double CleanlinessScore { get; set; }
+    public int CleanlinessScore { get; set; }
     [Range(1,5)]
-    public double MaintenanceScore { get; set; }
+    public int MaintenanceScore { get; set; }
     [Range(1,5)]
-    public double ConvenienceScore { get; set; }
+    public int ConvenienceScore { get; set; }
     [Range(1,5)]
-    public double CommunicationScore { get; set; }
-    public double AverageScore => (CleanlinessScore + MaintenanceScore + ConvenienceScore + CommunicationScore) / 4;
+    public int CommunicationScore { get; set; }
+    public double AverageScore => (CleanlinessScore + MaintenanceScore + ConvenienceScore + CommunicationScore) / 4.0;
     [Required(AllowEmptyStrings = true)] 
     public string Comment { get; set; } = null!;
     [Required]
-    public DateTime Date;
+    public DateTime? Date;
     [Required]
     public Renter Renter { get; set; } = null!;
 
     [Required]
     public Offer Offer { get; set; } = null!;
 
-    public OfferReview(DateTime date, double cleanlinessScore, double maintenanceScore, double convenienceScore, 
-        double communicationScore, string comment, Renter renter, Offer offer)
+    public OfferReview(DateTime date, int cleanlinessScore, int maintenanceScore, int convenienceScore, 
+        int communicationScore, string comment, Renter renter, Offer offer)
     {
         Date = date;
         CleanlinessScore = cleanlinessScore;
@@ -38,11 +38,6 @@ public class OfferReview
         Offer = offer;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
-        
-        if (Date == default)
-        {
-            throw new ValidationException("Date is not set.");
-        }
     }
 
     [JsonConstructor]

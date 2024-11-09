@@ -8,26 +8,23 @@ public class Booking
 {
     public static readonly int PlatformFee = 5;
     [Required]
-    public DateTime StartDate { get; set; }
+    public DateTime? StartDate { get; set; }
     [Required]
-    public DateTime EndDate { get; set; }
-    //[Range(1,double.MaxValue)]
-    //public decimal TotalPrice => Offer.PricePerDay * (EndDate - StartDate).Days + PlatformFee;
+    public DateTime? EndDate { get; set; }
+    public decimal TotalPrice
+    {
+        get
+        {
+            var rentalDays = (EndDate - StartDate)!.Value.Days;
+            rentalDays = rentalDays == 0 ? 1 : rentalDays;
+            return Offer.PricePerDay * rentalDays + PlatformFee;
+        }
+    }
     public BookingStatus Status { get; set; }
     [Required]
     public Renter Renter { get; set; }
     [Required]
     public Offer Offer { get; set; }
-    
-    public decimal TotalPrice
-    {
-        get
-        {
-            if (Offer == null) throw new ValidationException("Offer is not set.");
-            var days = (EndDate - StartDate).Days;
-            return (Offer.PricePerDay * days) + PlatformFee;
-        }
-    }
 
     public Booking(DateTime startDate, DateTime endDate, BookingStatus status, Renter renter, Offer offer)
     {
@@ -36,15 +33,11 @@ public class Booking
         Status = status;
         Renter = renter;
         Offer = offer;
-        if (startDate == default || endDate == default)
-        {
-            throw new ValidationException("Start and end date must be provided");
-        }
-        if (endDate < startDate)
+        ValidationHelpers.ValidateObject(this);
+        if (endDate <= startDate)
         {
             throw new ValidationException("End date must be after start date");
         }
-        ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
     }
 
