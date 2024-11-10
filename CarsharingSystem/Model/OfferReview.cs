@@ -28,6 +28,7 @@ public class OfferReview
     public OfferReview(DateTime date, int cleanlinessScore, int maintenanceScore, int convenienceScore, 
         int communicationScore, string comment, Renter renter, Offer offer)
     {
+        if (date == default) throw new ValidationException("Date is required.");
         Date = date;
         CleanlinessScore = cleanlinessScore;
         MaintenanceScore = maintenanceScore;
