@@ -10,8 +10,8 @@ public class UserReview
     public int Score { get; set; }
     [Required(AllowEmptyStrings = true)] 
     public string Comment { get; set; } = null!;
-    [Required]
-    public DateTime? Date;
+    
+    public DateTime Date;
     [Required]
     public User Reviewer { get; set; } = null!;
 
@@ -20,7 +20,6 @@ public class UserReview
 
     public UserReview(DateTime date, int score, string comment, User reviewer, User reviewee)
     {
-        if (date == default) throw new ValidationException("Date is required.");
         Date = date;
         Score = score;
         Comment = comment;

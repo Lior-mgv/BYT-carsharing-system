@@ -7,15 +7,13 @@ namespace CarsharingSystem.Model;
 public class Booking
 {
     public static readonly int PlatformFee = 5;
-    [Required]
-    public DateTime? StartDate { get; set; }
-    [Required]
-    public DateTime? EndDate { get; set; }
+    public DateTime StartDate { get; set; }
+    public DateTime EndDate { get; set; }
     public decimal TotalPrice
     {
         get
         {
-            var rentalDays = (EndDate - StartDate)!.Value.Days;
+            var rentalDays = (EndDate - StartDate)!.Days;
             rentalDays = rentalDays == 0 ? 1 : rentalDays;
             return Offer.PricePerDay * rentalDays + PlatformFee;
         }

@@ -44,9 +44,6 @@ namespace TestProject
 
             // Missing Renter
             Assert.Throws<ValidationException>(() => new OfferReview(date, 4, 4, 4, 4, "Good service", null, offer));
-
-            // Missing Date
-            Assert.Throws<ValidationException>(() => new OfferReview(default, 4, 4, 4, 4, "Good service", renter, offer));
         }
 
         [Test]

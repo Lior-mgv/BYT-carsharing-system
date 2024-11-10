@@ -22,7 +22,7 @@ public static class PersistenceContext
 
     public static List<T>? GetExtent<T>()
     {
-        return TypeToExtentMap.TryGetValue(typeof(T), out var list) ? new List<T>((IList<T>)list) : null;
+        return TypeToExtentMap.TryGetValue(typeof(T), out var list) ? new List<T>((List<T>)list) : null;
     }
 
     public static void SaveContext()

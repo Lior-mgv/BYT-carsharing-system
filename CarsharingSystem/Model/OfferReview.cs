@@ -17,8 +17,8 @@ public class OfferReview
     public double AverageScore => (CleanlinessScore + MaintenanceScore + ConvenienceScore + CommunicationScore) / 4.0;
     [Required(AllowEmptyStrings = true)] 
     public string Comment { get; set; } = null!;
-    [Required]
-    public DateTime? Date;
+    
+    public DateTime Date;
     [Required]
     public Renter Renter { get; set; } = null!;
 
@@ -28,7 +28,6 @@ public class OfferReview
     public OfferReview(DateTime date, int cleanlinessScore, int maintenanceScore, int convenienceScore, 
         int communicationScore, string comment, Renter renter, Offer offer)
     {
-        if (date == default) throw new ValidationException("Date is required.");
         Date = date;
         CleanlinessScore = cleanlinessScore;
         MaintenanceScore = maintenanceScore;

@@ -36,9 +36,6 @@ namespace TestProject
 
             // Missing Reviewer
             Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", null!, reviewee));
-
-            // Missing Date
-            Assert.Throws<ValidationException>(() => new UserReview(default, 4, "Good user", reviewer, reviewee));
         }
 
         [Test]
