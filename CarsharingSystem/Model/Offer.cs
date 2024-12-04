@@ -14,7 +14,9 @@ public class Offer
     [Range(14,25)]
     public int? MinimalAge { get; set; }
     public List<OfferReview> OfferReviews { get; set; } = [];
-    public List<Address> Addresses { get; set; } = [];
+    
+    private readonly List<Address> _addresses = [];
+    public List<Address> Addresses => [.._addresses];
     public List<Booking> Bookings { get; set; } = [];
     [Required]
     public Vehicle Vehicle { get; set; }
@@ -32,5 +34,25 @@ public class Offer
         Vehicle = vehicle;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
+    }
+
+    public void AddAddress(Address address)
+    {
+        _addresses.Add(address);
+        if (!address.Offers.Contains(this))
+        {
+            address.AddOffer(this);
+        }
+    }
+
+    public bool DeleteAddress(Address address)
+    {
+        var res = _addresses.Remove(address);
+        if (address.Offers.Contains(this))
+        {
+            address.DeleteOffer(this);
+        }
+
+        return res;
     }
 }

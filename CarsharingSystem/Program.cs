@@ -85,6 +85,12 @@ Offer offer1 = new Offer(
     vehicle: vehicle1
 );
 
+var address = new Address("city", "street", 5, "postcode");
+
+offer1.AddAddress(address);
+
+offer1.DeleteAddress(address);
+
 // Create offer2 using the public constructor
 Offer offer2 = new Offer(
     pricePerDay: 49.99m,
