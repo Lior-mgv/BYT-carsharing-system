@@ -49,7 +49,7 @@ namespace TestProject
 
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle);
-            address.Offers.Add(offer);
+            address.AddOffer(offer);
 
             Assert.Contains(offer, address.Offers);
         }

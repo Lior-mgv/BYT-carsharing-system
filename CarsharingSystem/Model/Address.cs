@@ -32,9 +32,19 @@ public class Address
     private Address()
     {
     }
+    
 
     public void AddOffer(Offer offer)
     {
+        if (offer == null)
+        {
+            throw new ArgumentNullException(nameof(offer));
+        }
+
+        if (_offers.Contains(offer))
+        {
+            throw new InvalidOperationException("Offer already contains this address");
+        }
         _offers.Add(offer);
         if (!offer.Addresses.Contains(this))
         {
@@ -44,6 +54,10 @@ public class Address
 
     public bool DeleteOffer(Offer offer)
     {
+        if (offer == null)
+        {
+            throw new ArgumentNullException(nameof(offer));
+        }
         var res = _offers.Remove(offer);
         if (offer.Addresses.Contains(this))
         {
