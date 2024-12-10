@@ -78,26 +78,28 @@ hostInfo1.Vehicles.Add(vehicle1);
 hostInfo1.Vehicles.Add(vehicle2);
 
 // Create offer1 using the public constructor
-Offer offer1 = new Offer(
-    pricePerDay: 99.99m,
-    description: "Tesla Model S - Luxury Electric Sedan",
-    minimalAge: 25,
-    vehicle: vehicle1
-);
+// Offer offer1 = new Offer(
+//     pricePerDay: 99.99m,
+//     description: "Tesla Model S - Luxury Electric Sedan",
+//     minimalAge: 25,
+//     vehicle: vehicle1
+//     addresses: new List<Address>(){new Address("city", "Street", 1, "PostalCode")}
+// );
 
 var address = new Address("city", "street", 5, "postcode");
 
-offer1.AddAddress(address);
-
-offer1.DeleteAddress(address);
-
-// Create offer2 using the public constructor
-Offer offer2 = new Offer(
-    pricePerDay: 49.99m,
-    description: "Toyota Corolla - Reliable Sedan",
-    minimalAge: 21,
-    vehicle: vehicle2
-);
+// offer1.AddAddress(address);
+//
+// offer1.DeleteAddress(address);
+//
+// // Create offer2 using the public constructor
+// Offer offer2 = new Offer(
+//     pricePerDay: 49.99m,
+//     description: "Toyota Corolla - Reliable Sedan",
+//     minimalAge: 21,
+//     vehicle: vehicle2
+//     Address: new List<Address>(){new Address("city", "Street", 1, "PostalCode")}
+// );
 
 PersistenceContext.SaveContext();
 

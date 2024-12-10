@@ -48,7 +48,7 @@ namespace TestProject
             var address = new Address(city, street, buildingNumber, postalCode);
 
             var vehicle = new PassengerCar();
-            var offer = new Offer(100.0m, "Description", 18, vehicle);
+            var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
             address.AddOffer(offer);
 
             Assert.Contains(offer, address.Offers);

@@ -13,8 +13,9 @@ namespace TestProject
             var description = "A comfortable car for long trips.";
             var minimalAge = 18;
             var vehicle = new PassengerCar();
+            var addresses = new List<Address>(){new Address("city", "Street", 1, "PostalCode")};
 
-            var offer = new Offer(pricePerDay, description, minimalAge, vehicle);
+            var offer = new Offer(pricePerDay, description, minimalAge, vehicle, addresses);
 
             Assert.That(offer.PricePerDay, Is.EqualTo(pricePerDay));
             Assert.That(offer.Description, Is.EqualTo(description));
@@ -31,10 +32,10 @@ namespace TestProject
             var vehicle = new PassengerCar();
 
             // Missing PricePerDay
-            Assert.Throws<ValidationException>(() => new Offer(0, "Description", 18, vehicle));
+            Assert.Throws<ValidationException>(() => new Offer(0, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}));
 
             // Missing Vehicle
-            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 18, null));
+            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 18, null, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}));
         }
 
         [Test]
@@ -42,7 +43,7 @@ namespace TestProject
         {
             var vehicle = new PassengerCar();
 
-            Assert.Throws<ValidationException>(() => new Offer(-1, "Description", 18, vehicle));
+            Assert.Throws<ValidationException>(() => new Offer(-1, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}));
         }
 
         [Test]
@@ -50,8 +51,8 @@ namespace TestProject
         {
             var vehicle = new PassengerCar();
 
-            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 12, vehicle));
-            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 30, vehicle));
+            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 12, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}));
+            Assert.Throws<ValidationException>(() => new Offer(100, "Description", 30, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}));
         }
     }
 }
