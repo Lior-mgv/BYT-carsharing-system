@@ -28,7 +28,7 @@ public class SerializationAndDeserializationTests
     public void Serialization_ShouldSerializeAndDeserializeCorrectly()
     {
         var vehicle = new PassengerCar();
-        var offer = new Offer(100, "Description", 18, vehicle);
+        var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
 
         // Serialize
         PersistenceManager.Save(new List<Offer> { offer }, TestFilePath);

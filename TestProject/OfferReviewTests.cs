@@ -16,7 +16,7 @@ namespace TestProject
             var comment = "Great experience!";
             var renter = new Renter();
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
 
             var offerReview = new OfferReview(date, cleanlinessScore, maintenanceScore, convenienceScore, communicationScore, comment, renter, offer);
 
@@ -37,7 +37,7 @@ namespace TestProject
             var date = DateTime.Now;
             var renter = new Renter();
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
 
             // Missing Offer
             Assert.Throws<ValidationException>(() => new OfferReview(date, 4, 4, 4, 4, "Good service", renter, null));
@@ -52,7 +52,7 @@ namespace TestProject
             var date = DateTime.Now;
             var renter = new Renter();
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
 
             // Invalid CleanlinessScore
             Assert.Throws<ValidationException>(() => new OfferReview(date, 0, 4, 4, 4, "Comment", renter, offer));
@@ -77,7 +77,7 @@ namespace TestProject
             var date = DateTime.Now;
             var renter = new Renter();
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
 
             var offerReview = new OfferReview(date, 5, 4, 3, 2, "Feedback", renter, offer);
 

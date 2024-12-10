@@ -19,7 +19,7 @@ namespace TestProject
             var bedLength = 6.5;
 
             var truck = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, null, host, bedLength);
-            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, truck);
+            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, truck, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
             truck.Offer = offer;
 
             Assert.That(truck.Model, Is.EqualTo(model));

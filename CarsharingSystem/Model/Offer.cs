@@ -13,8 +13,8 @@ public class Offer
     public string Description { get; set; }
     [Range(14,25)]
     public int? MinimalAge { get; set; }
-    public List<OfferReview> OfferReviews { get; set; } = [];
-    
+    private readonly List<OfferReview> _offerReviews = [];
+    public List<OfferReview> OfferReviews => [.._offerReviews];
     private readonly List<Address> _addresses = [];
     public List<Address> Addresses => [.._addresses];
     public List<Booking> Bookings { get; set; } = [];
@@ -25,15 +25,26 @@ public class Offer
     private Offer()
     {
     }
-
-    public Offer(decimal pricePerDay, string description, int? minimalAge, Vehicle vehicle)
+    public Offer(decimal pricePerDay, string description, int? minimalAge, Vehicle vehicle, List<Address> addresses)
     {
+        
         PricePerDay = pricePerDay;
         Description = description;
         MinimalAge = minimalAge;
         Vehicle = vehicle;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
+        if (addresses != null || addresses.Count != 0)
+        {
+            foreach (var address in addresses)
+            {
+                AddAddress(address);
+            }
+        }
+        else
+        {
+            throw new MissingFieldException("Offer must have at least one address");
+        }
     }
 
     public void AddAddress(Address address)
