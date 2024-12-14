@@ -79,4 +79,45 @@ public class Offer
 
         return res;
     }
+    
+    public void AddOfferReview(OfferReview offerReview)
+    {
+        if (offerReview == null)
+        {
+            throw new ArgumentNullException(nameof(offerReview));
+        }
+
+        if (_offerReviews.Contains(offerReview))
+        {
+            throw new InvalidOperationException("Offer already contains this review");
+        }
+        _offerReviews.Add(offerReview);
+        if (offerReview.Offer != this)
+        {
+            offerReview.Offer = this;
+        }
+    }
+    
+    public bool DeleteOfferReview(OfferReview offerReview)
+    {
+        if (offerReview == null)
+        {
+            throw new ArgumentNullException(nameof(offerReview));
+        }
+        var res = _offerReviews.Remove(offerReview);
+        if (offerReview.Offer == this)
+        {
+            offerReview.Offer = null;
+        }
+
+        return res;
+    }
+
+    public void DeleteOffer(Offer offer)
+    {
+        foreach (var offerReview in _offerReviews)
+        {
+            
+        }
+    }
 }

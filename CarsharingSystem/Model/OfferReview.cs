@@ -38,10 +38,17 @@ public class OfferReview
         Offer = offer;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.Add(this);
+        Offer.AddOfferReview(this);
+        Renter.AddOfferReview(this);
     }
 
     [JsonConstructor]
     private OfferReview()
     {
+    }
+    
+    public void DeleteOfferReview()
+    {
+        
     }
 }
