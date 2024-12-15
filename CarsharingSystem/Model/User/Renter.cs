@@ -31,7 +31,7 @@ public class Renter
         throw new NotImplementedException();
     }
 
-    public bool DeleteOfferReview(UserReview review)
+    public bool RemoveOfferReview(OfferReview review)
     {
         throw new NotImplementedException();
     }
@@ -46,7 +46,7 @@ public class Renter
         throw new NotImplementedException();
     }
 
-    public bool DeleteBooking(Booking booking)
+    public bool RemoveBooking(Booking booking)
     {
         throw new NotImplementedException();
     }

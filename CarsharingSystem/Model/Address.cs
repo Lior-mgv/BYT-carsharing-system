@@ -40,7 +40,7 @@ public class Address
 
         if (_offers.Contains(offer))
         {
-            throw new InvalidOperationException("Offer already contains this address");
+            throw new InvalidOperationException("offer already contains this address");
         }
         _offers.Add(offer);
         if (!offer.Addresses.Contains(this))
@@ -49,25 +49,34 @@ public class Address
         }
     }
 
-    public bool DeleteOffer(Offer offer)
+    public bool RemoveOffer(Offer offer)
     {
         ArgumentNullException.ThrowIfNull(offer);
         
         var res = _offers.Remove(offer);
         if (offer.Addresses.Contains(this))
         {
-            offer.DeleteAddress(this);
+            offer.RemoveAddress(this);
         }
         return res;
     }
 
     public void UpdateOffer(Offer oldOffer, Offer newOffer)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(oldOffer);
+        ArgumentNullException.ThrowIfNull(newOffer);
+
+        RemoveOffer(oldOffer);
+        AddOffer(newOffer);
     }
 
     public void DeleteAddress()
     {
-        throw new NotImplementedException();
+        foreach (var offer in _offers.ToList()) 
+        {
+            RemoveOffer(offer);
+        }
+        PersistenceContext.DeleteFromExtent(this);
     }
+
 }

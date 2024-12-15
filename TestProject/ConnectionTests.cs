@@ -41,7 +41,7 @@ public void DeleteAddress_ShouldRemoveAddressAndUpdateBidirectionalRelationship(
     offer.AddAddress(address);
 
     // Act
-    var result = offer.DeleteAddress(address);
+    var result = offer.RemoveAddress(address);
 
     // Assert
     Assert.IsTrue(result, "DeleteAddress should return true if the address was removed.");
@@ -59,7 +59,7 @@ public void DeleteAddress_ShouldHandleNonexistentAddressGracefully()
     var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){address1}, host);
 
     // Act
-    var result = offer.DeleteAddress(address2);
+    var result = offer.RemoveAddress(address2);
 
     // Assert
     Assert.IsFalse(result, "DeleteAddress should return false if the address was not found.");
@@ -82,7 +82,7 @@ public void DeleteAddress_ShouldThrowExceptionForNullInput()
     var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
 
     // Act & Assert
-    Assert.Throws<ArgumentNullException>(() => offer.DeleteAddress(null));
+    Assert.Throws<ArgumentNullException>(() => offer.RemoveAddress(null));
 }
 
 }

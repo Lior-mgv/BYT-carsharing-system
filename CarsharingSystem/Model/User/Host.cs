@@ -46,7 +46,7 @@ public class Host
 
         if (_offers.Contains(offer))
         {
-            throw new InvalidOperationException("Host already contains this vehicle");
+            throw new InvalidOperationException("Host already contains this offer");
         }
 
         if (offer.Host != this)
@@ -59,7 +59,7 @@ public class Host
     {
         ArgumentNullException.ThrowIfNull(offer);
         var res = _offers.Remove(offer);
-        offer.DeleteOffer();
+        offer.DeleteOffer(offer);
         return res;
     }
 

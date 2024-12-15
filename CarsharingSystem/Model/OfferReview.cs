@@ -47,8 +47,12 @@ public class OfferReview
     {
     }
     
-    public void DeleteOfferReview()
+    public void DeleteReview()
     {
-        throw new NotImplementedException();
+        Offer.RemoveOfferReview(this);
+        Renter.RemoveOfferReview(this);
+        PersistenceContext.DeleteFromExtent(this);
     }
+
+    
 }
