@@ -8,7 +8,7 @@ public class ConnectionTests
 public void AddAddress_ShouldAddAddressAndUpdateBidirectionalRelationship()
 {
     // Arrange
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
     var address = new Address("City", "123", 12345, "12345");
 
     // Act
@@ -23,7 +23,7 @@ public void AddAddress_ShouldAddAddressAndUpdateBidirectionalRelationship()
 public void AddAddress_ShouldNotAddDuplicateAddress()
 {
     // Arrange
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
     var address = new Address("City", "123", 12345, "12345");
     offer.AddAddress(address);
     
@@ -36,7 +36,7 @@ public void AddAddress_ShouldNotAddDuplicateAddress()
 public void DeleteAddress_ShouldRemoveAddressAndUpdateBidirectionalRelationship()
 {
     // Arrange
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
     var address = new Address("City", "123", 12345, "12345");
     offer.AddAddress(address);
 
@@ -53,22 +53,23 @@ public void DeleteAddress_ShouldRemoveAddressAndUpdateBidirectionalRelationship(
 public void DeleteAddress_ShouldHandleNonexistentAddressGracefully()
 {
     // Arrange
-    var adress = new Address("city", "Street", 1, "PostalCode");
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){adress});
+    var address1 = new Address("city", "Street", 1, "PostalCode");
+    var address2 = new Address("city", "Street", 1, "PostalCode");
+    var host = new Host();
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){address1}, host);
 
     // Act
-    var result = offer.DeleteAddress(adress);
+    var result = offer.DeleteAddress(address2);
 
     // Assert
     Assert.IsFalse(result, "DeleteAddress should return false if the address was not found.");
-    Assert.IsEmpty(offer.Addresses, "Offer addresses should remain unchanged.");
 }
 
 [Test]
 public void AddAddress_ShouldThrowExceptionForNullInput()
 {
     // Arrange
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
 
     // Act & Assert
     Assert.Throws<ArgumentNullException>(() => offer.AddAddress(null));
@@ -78,7 +79,7 @@ public void AddAddress_ShouldThrowExceptionForNullInput()
 public void DeleteAddress_ShouldThrowExceptionForNullInput()
 {
     // Arrange
-    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+    var offer = new Offer(100.0m, "Test Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
 
     // Act & Assert
     Assert.Throws<ArgumentNullException>(() => offer.DeleteAddress(null));

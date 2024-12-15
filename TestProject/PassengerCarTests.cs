@@ -14,7 +14,7 @@ namespace TestProject
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Automatic;
             var gasVehicleInfo = new GasVehicle { FuelType = "Gasoline", FuelConsumption = 6 };
-            var offer = new Offer(50, "Rental Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+            var offer = new Offer(50, "Rental Offer", 18, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
             var host = new Host();
             
             var passengerCar = new PassengerCar(model, numOfSeats, numOfDoors, transmissionType, null, gasVehicleInfo, offer, host);

@@ -17,7 +17,7 @@ namespace TestProject
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
             GasVehicle? gasVehicleInfo = null;
-            var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+            var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
             var host = new Host();
 
             var vehicle = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, 10.0);

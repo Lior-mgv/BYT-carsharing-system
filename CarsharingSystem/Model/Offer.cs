@@ -20,21 +20,23 @@ public class Offer
     public List<Booking> Bookings { get; set; } = [];
     [Required]
     public Vehicle Vehicle { get; set; }
-    
+
+    [Required]
+    public Host Host { get; set; }
+
     [JsonConstructor]
     private Offer()
     {
     }
-    public Offer(decimal pricePerDay, string description, int? minimalAge, Vehicle vehicle, List<Address> addresses)
+    public Offer(decimal pricePerDay, string description, int? minimalAge, Vehicle vehicle, List<Address> addresses, Host host)
     {
-        
         PricePerDay = pricePerDay;
         Description = description;
         MinimalAge = minimalAge;
         Vehicle = vehicle;
+        Host = host;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.AddToExtent(this);
-        if (addresses != null || addresses.Count != 0)
+        if (addresses != null && addresses.Count != 0)
         {
             foreach (var address in addresses)
             {
@@ -45,14 +47,14 @@ public class Offer
         {
             throw new MissingFieldException("Offer must have at least one address");
         }
+        Host.AddOffer(this);
+        
+        PersistenceContext.AddToExtent(this);
     }
 
     public void AddAddress(Address address)
     {
-        if (address == null)
-        {
-            throw new ArgumentNullException(nameof(address));
-        }
+        ArgumentNullException.ThrowIfNull(address);
 
         if (_addresses.Contains(address))
         {
@@ -67,10 +69,8 @@ public class Offer
 
     public bool DeleteAddress(Address address)
     {
-        if (address == null)
-        {
-            throw new ArgumentNullException(nameof(address));
-        }
+        ArgumentNullException.ThrowIfNull(address);
+        
         var res = _addresses.Remove(address);
         if (address.Offers.Contains(this))
         {
@@ -82,10 +82,7 @@ public class Offer
     
     public void AddOfferReview(OfferReview offerReview)
     {
-        if (offerReview == null)
-        {
-            throw new ArgumentNullException(nameof(offerReview));
-        }
+        ArgumentNullException.ThrowIfNull(offerReview);
 
         if (_offerReviews.Contains(offerReview))
         {
@@ -100,15 +97,11 @@ public class Offer
     
     public bool DeleteOfferReview(OfferReview offerReview)
     {
-        if (offerReview == null)
-        {
-            throw new ArgumentNullException(nameof(offerReview));
-        }
+        ArgumentNullException.ThrowIfNull(offerReview);
+        
         var res = _offerReviews.Remove(offerReview);
-        if (offerReview.Offer == this)
-        {
-            offerReview.Offer = null;
-        }
+        
+        offerReview.DeleteOfferReview();
 
         return res;
     }
@@ -120,5 +113,20 @@ public class Offer
             PersistenceContext.DeleteFromExtent(offerReview);
         }
         PersistenceContext.DeleteFromExtent(this);
+    }
+    
+    public void AddBooking(Booking booking)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public void UpdateBooking(Booking oldBooking, Booking newBooking)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool DeleteBooking(Booking booking)
+    {
+        throw new NotImplementedException();
     }
 }

@@ -45,10 +45,11 @@ namespace TestProject
             var street = "Main Street";
             var buildingNumber = 123;
             var postalCode = "10001";
+            var host = new Host();
             var address = new Address(city, street, buildingNumber, postalCode);
 
             var vehicle = new PassengerCar();
-            var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")});
+            var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
             address.AddOffer(offer);
 
             Assert.Contains(offer, address.Offers);
