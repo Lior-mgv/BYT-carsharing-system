@@ -13,10 +13,7 @@ public class Renter
     
     public void AddOfferReview(OfferReview offerReview)
     {
-        if (offerReview == null)
-        {
-            throw new ArgumentNullException(nameof(offerReview));
-        }
+        ArgumentNullException.ThrowIfNull(offerReview);
 
         if (_offerReviews.Contains(offerReview))
         {
@@ -28,9 +25,29 @@ public class Renter
             offerReview.Renter = this;
         }
     }
-
-    public void DeleteOfferReview(OfferReview offerReview)
+    
+    public void UpdateOfferReview(UserReview oldReview, UserReview newReview)
     {
-        
+        throw new NotImplementedException();
+    }
+
+    public bool DeleteOfferReview(UserReview review)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void AddBooking(Booking booking)
+    {
+        throw new NotImplementedException();
+    }
+    
+    public void UpdateBooking(Booking oldBooking, Booking newBooking)
+    {
+        throw new NotImplementedException();
+    }
+
+    public bool DeleteBooking(Booking booking)
+    {
+        throw new NotImplementedException();
     }
 }

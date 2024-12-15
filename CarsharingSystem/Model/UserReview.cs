@@ -33,4 +33,9 @@ public class UserReview
     private UserReview()
     {
     }
+
+    public void DeleteUserReview()
+    {
+        throw new NotImplementedException();
+    }
 }

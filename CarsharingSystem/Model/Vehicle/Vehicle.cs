@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
+using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
@@ -25,7 +26,6 @@ public abstract class Vehicle
     public bool IsGas => GasVehicleInfo != null;
 
     public Offer? Offer { get; set; }
-    [Required]
     public Host Host { get; set; }
     
     [JsonConstructor]    
@@ -44,5 +44,21 @@ public abstract class Vehicle
         GasVehicleInfo = gasVehicleInfo;
         Offer = offer;
         Host = host;
+        if (host == null)
+        {
+            throw new ValidationException("Host cannot be null");
+        }
+
+        host.AddVehicle(this);
+    }
+
+    public void DeleteVehicle()
+    {
+        if (Host.Vehicles.Contains(this))
+        {
+            Host.DeleteVehicle(this);
+        }
+        Offer?.DeleteOffer();
+        PersistenceContext.DeleteFromExtent(this);
     }
 }

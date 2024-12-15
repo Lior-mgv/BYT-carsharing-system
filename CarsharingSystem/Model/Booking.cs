@@ -24,6 +24,9 @@ public class Booking
     [Required]
     public Offer Offer { get; set; }
 
+    private readonly Dictionary<string, DiscountCode> _discountCodes = [];
+    public Dictionary<string, DiscountCode> DiscountCodes => new (_discountCodes);
+
     public Booking(DateTime startDate, DateTime endDate, BookingStatus status, Renter renter, Offer offer)
     {
         StartDate = startDate;
@@ -36,11 +39,39 @@ public class Booking
         {
             throw new ValidationException("End date must be after start date");
         }
+
+        offer.AddBooking(this);
+        renter.AddBooking(this);
         PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]
     private Booking()
     {
+    }
+
+    public void AddDiscountCode(DiscountCode discountCode)
+    {
+        ArgumentNullException.ThrowIfNull(discountCode);
+
+        if (!_discountCodes.TryAdd(discountCode.Code, discountCode))
+        {
+            throw new InvalidOperationException("Booking already contains this discount code");
+        }
+    }
+
+    public bool DeleteDiscountCode(string code)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateDiscountCode(string oldCode, DiscountCode newDiscountCode)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteBooking()
+    {
+        throw new NotImplementedException();
     }
 }

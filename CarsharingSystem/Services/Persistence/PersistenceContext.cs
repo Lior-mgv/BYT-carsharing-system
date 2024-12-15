@@ -1,6 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Specialized;
-using System.Xml.Serialization;
 using CarsharingSystem.Model;
 
 namespace CarsharingSystem.Services;
@@ -18,7 +16,8 @@ public static class PersistenceContext
         {typeof(Booking), new List<Booking>()},
         {typeof(Offer), new List<Offer>()},
         {typeof(OfferReview), new List<OfferReview>()},
-        {typeof(UserReview), new List<UserReview>()}
+        {typeof(UserReview), new List<UserReview>()},
+        {typeof(DiscountCode), new List<DiscountCode>()}
     };
 
     public static List<T>? GetExtent<T>()
@@ -26,12 +25,11 @@ public static class PersistenceContext
         return TypeToExtentMap.TryGetValue(typeof(T), out var list) ? new List<T>((List<T>)list) : null;
     }
 
-    public static bool DeleteFromExtent<T>(T obj)
+    public static void DeleteFromExtent<T>(T obj)
     {
-        if (!TypeToExtentMap.TryGetValue(typeof(T), out var list)) return false;
-        if (!list.Contains(obj)) return false;
+        if (!TypeToExtentMap.TryGetValue(typeof(T), out var list)) return;
+        if (!list.Contains(obj)) return;
         list.Remove(obj);
-        return true;
     }
 
     public static void SaveContext()

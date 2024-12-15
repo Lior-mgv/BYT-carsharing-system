@@ -36,10 +36,7 @@ public class Address
 
     public void AddOffer(Offer offer)
     {
-        if (offer == null)
-        {
-            throw new ArgumentNullException(nameof(offer));
-        }
+        ArgumentNullException.ThrowIfNull(offer);
 
         if (_offers.Contains(offer))
         {
@@ -54,15 +51,23 @@ public class Address
 
     public bool DeleteOffer(Offer offer)
     {
-        if (offer == null)
-        {
-            throw new ArgumentNullException(nameof(offer));
-        }
+        ArgumentNullException.ThrowIfNull(offer);
+        
         var res = _offers.Remove(offer);
         if (offer.Addresses.Contains(this))
         {
             offer.DeleteAddress(this);
         }
         return res;
+    }
+
+    public void UpdateOffer(Offer oldOffer, Offer newOffer)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void DeleteAddress()
+    {
+        throw new NotImplementedException();
     }
 }
