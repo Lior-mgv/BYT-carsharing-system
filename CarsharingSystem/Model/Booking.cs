@@ -36,7 +36,7 @@ public class Booking
         {
             throw new ValidationException("End date must be after start date");
         }
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]

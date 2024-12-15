@@ -35,6 +35,6 @@ public class User
         HostInfo = hostInfo;
         RenterInfo = renterInfo;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 }

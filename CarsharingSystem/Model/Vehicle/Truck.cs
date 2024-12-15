@@ -16,7 +16,7 @@ public class Truck : Vehicle
     {
         BedLength = bedLength;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]

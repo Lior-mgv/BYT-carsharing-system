@@ -37,7 +37,7 @@ public class OfferReview
         Renter = renter;
         Offer = offer;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
         Offer.AddOfferReview(this);
         Renter.AddOfferReview(this);
     }

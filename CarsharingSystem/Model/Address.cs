@@ -25,7 +25,7 @@ public class Address
         BuildingNumber = buildingNumber;
         PostalCode = postalCode;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]

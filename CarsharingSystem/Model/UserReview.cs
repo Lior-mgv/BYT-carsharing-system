@@ -26,7 +26,7 @@ public class UserReview
         Reviewer = reviewer;
         Reviewee = reviewee;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]

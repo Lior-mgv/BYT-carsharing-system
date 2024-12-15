@@ -33,7 +33,7 @@ public class Offer
         MinimalAge = minimalAge;
         Vehicle = vehicle;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
         if (addresses != null || addresses.Count != 0)
         {
             foreach (var address in addresses)
@@ -113,11 +113,12 @@ public class Offer
         return res;
     }
 
-    public void DeleteOffer(Offer offer)
+    public void DeleteOffer()
     {
         foreach (var offerReview in _offerReviews)
         {
-            
+            PersistenceContext.DeleteFromExtent(offerReview);
         }
+        PersistenceContext.DeleteFromExtent(this);
     }
 }

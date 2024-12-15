@@ -12,7 +12,7 @@ public class PassengerCar : Vehicle
         : base(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host)
     {
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]

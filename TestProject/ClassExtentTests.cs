@@ -48,7 +48,7 @@ namespace TestProject
         {
             var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var count = PersistenceContext.GetExtent<User>()!.Count;
-            PersistenceContext.Add(user); //trying to add the object for the second time
+            PersistenceContext.AddToExtent(user); //trying to add the object for the second time
 
             var extent = PersistenceContext.GetExtent<User>();
             Assert.That(extent.Count, Is.EqualTo(count));

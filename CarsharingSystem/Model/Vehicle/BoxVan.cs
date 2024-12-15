@@ -16,7 +16,7 @@ public class BoxVan : Vehicle
     {
         BoxVolume = boxVolume;
         ValidationHelpers.ValidateObject(this);
-        PersistenceContext.Add(this);
+        PersistenceContext.AddToExtent(this);
     }
 
     [JsonConstructor]
