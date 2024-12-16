@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
@@ -6,7 +7,9 @@ public class Renter
 {
     [Required]
     public string DrivingLicenseNumber { get; set; }
-    public List<Booking> Bookings { get; set; } = [];
+
+    private readonly List<Booking> _bookings = [];
+    public List<Booking> Bookings => [.._bookings];
     
     private readonly List<OfferReview> _offerReviews = [];
     public List<OfferReview> OfferReviews => [.._offerReviews];
@@ -25,29 +28,63 @@ public class Renter
             offerReview.Renter = this;
         }
     }
-    
-    public void UpdateOfferReview(UserReview oldReview, UserReview newReview)
-    {
-        throw new NotImplementedException();
-    }
 
     public bool RemoveOfferReview(OfferReview review)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(review);
+
+        var res = _offerReviews.Remove(review);
+        review.DeleteReview();
+        return res;
+    }
+    
+    public void UpdateOfferReview(OfferReview oldReview, OfferReview newReview)
+    {
+        AddOfferReview(newReview);
+        RemoveOfferReview(oldReview);
     }
 
     public void AddBooking(Booking booking)
     {
-        throw new NotImplementedException();
-    }
-    
-    public void UpdateBooking(Booking oldBooking, Booking newBooking)
-    {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(booking);
+
+        if (_bookings.Contains(booking))
+        {
+            throw new InvalidOperationException("Offer already contains this booking");
+        }
+        _bookings.Add(booking);
+        if (booking.Renter != this)
+        {
+            booking.Renter = this;
+        }
     }
 
     public bool RemoveBooking(Booking booking)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(booking);
+        
+        var res = _bookings.Remove(booking);
+        booking.DeleteBooking();
+        return res;
+    }
+    
+    public void UpdateBooking(Booking oldBooking, Booking newBooking)
+    {
+        AddBooking(newBooking);
+        RemoveBooking(oldBooking);
+    }
+    
+    public void DeleteRenter(Renter renter)
+    {
+        foreach (var booking in _bookings)
+        {
+            RemoveBooking(booking);
+        }
+
+        foreach (var review in _offerReviews)
+        {
+            RemoveOfferReview(review);
+        }
+        PersistenceContext.DeleteFromExtent(renter);
     }
 }

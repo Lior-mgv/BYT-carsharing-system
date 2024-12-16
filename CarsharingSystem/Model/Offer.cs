@@ -53,7 +53,7 @@ public class Offer
             throw new MissingFieldException("Offer must have at least one address");
         }
         Host.AddOffer(this);
-        
+        Vehicle.Offer = this;
         PersistenceContext.AddToExtent(this);
     }
 
@@ -109,12 +109,9 @@ public class Offer
     {
         ArgumentNullException.ThrowIfNull(review);
 
-        var removed = _offerReviews.Remove(review);
-        if (removed && review.Offer == this)
-        {
-            review.Offer = null!;
-        }
-        return removed;
+        var res = _offerReviews.Remove(review);
+        review.DeleteReview();
+        return res;
     }
 
     public void UpdateOfferReview(OfferReview oldOfferReview, OfferReview newOfferReview)
@@ -143,9 +140,7 @@ public class Offer
         ArgumentNullException.ThrowIfNull(booking);
         
         var res = _bookings.Remove(booking);
-        
-        PersistenceContext.DeleteFromExtent(booking);
-
+        booking.DeleteBooking();
         return res;
     }
     
@@ -154,16 +149,11 @@ public class Offer
         AddBooking(newBooking);
         RemoveBooking(oldBooking);
     }
-
-    public void AddVehicle(Vehicle vehicle)
-    {
-        
-    }
+    
 
     private void RemoveVehicle(Vehicle vehicle)
     {
         Vehicle.Offer = null;
-        Vehicle = null!;
     }
     
     public void DeleteOffer(Offer offer)

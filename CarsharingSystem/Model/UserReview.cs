@@ -34,8 +34,17 @@ public class UserReview
     {
     }
 
-    public void DeleteUserReview()
+    public void DeleteUserReview(UserReview review)
     {
-        throw new NotImplementedException();
+        if (Reviewer.UserReviews.Contains(this))
+        {
+            Reviewer.RemoveUserReview(this);
+        }
+
+        if (Reviewee.UserReviews.Contains(this))
+        {
+            Reviewee.RemoveUserReview(this);
+        }
+        PersistenceContext.DeleteFromExtent(this);
     }
 }

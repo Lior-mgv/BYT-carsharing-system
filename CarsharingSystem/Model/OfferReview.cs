@@ -49,10 +49,15 @@ public class OfferReview
     
     public void DeleteReview()
     {
-        Offer.RemoveOfferReview(this);
-        Renter.RemoveOfferReview(this);
+        if (Offer.OfferReviews.Contains(this))
+        {
+            Offer.RemoveOfferReview(this);
+        }
+
+        if (Renter.OfferReviews.Contains(this))
+        {
+            Renter.RemoveOfferReview(this);
+        }
         PersistenceContext.DeleteFromExtent(this);
     }
-
-    
 }

@@ -20,10 +20,8 @@ public class User
     
     public bool IsRenter => RenterInfo != null;
     public bool IsHost => HostInfo != null;
-    private readonly List<UserReview> _userReviewsWritten = [];
-    public List<UserReview> UserReviewsWritten => [.._userReviewsWritten];
-    private readonly List<UserReview> _userReviewsReceived = [];
-    public List<UserReview> UserReviewsReceived => [.._userReviewsReceived];
+    private readonly List<UserReview> _userReviews = [];
+    public List<UserReview> UserReviews => [.._userReviews];
     
     [JsonConstructor]
     private User()
@@ -42,37 +40,53 @@ public class User
         PersistenceContext.AddToExtent(this);
     }
 
-    public void AddUserReviewWritten(UserReview review)
+    public void AddUserReview(UserReview review)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(review);
+
+        if (_userReviews.Contains(review))
+        {
+            throw new InvalidOperationException("Review already exists in written reviews.");
+        }
+        
+        _userReviews.Add(review);
+
+        if (review.Reviewer != this)
+        {
+            review.Reviewer = this;
+        }
     }
     
-    public void UpdateUserReviewWritten(UserReview oldReview, UserReview newReview)
+    public bool RemoveUserReview(UserReview review)
     {
-        throw new NotImplementedException();
-    }
-
-    public bool DeleteUserReviewWritten(UserReview review)
-    {
-        throw new NotImplementedException();
-    }
-    public void AddUserReviewReceived(UserReview review)
-    {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(review);
+        var res = _userReviews.Remove(review);
+        review.DeleteUserReview(review);
+        return res;
     }
     
-    public void UpdateUserReviewReceived(UserReview oldReview, UserReview newReview)
+    public void UpdateUserReview(UserReview oldReview, UserReview newReview)
     {
-        throw new NotImplementedException();
+        AddUserReview(newReview);
+        RemoveUserReview(oldReview);
     }
 
-    public bool DeleteUserReviewReceived(UserReview review)
+    public void DeleteUser(User user)
     {
-        throw new NotImplementedException();
-    }
+        if (user.IsHost)
+        {
+            user.HostInfo?.DeleteHost(user.HostInfo);
+        }
 
-    public void DeleteUser()
-    {
-        throw new NotImplementedException();
+        if (user.IsRenter)
+        {
+            user.RenterInfo?.DeleteRenter(user.RenterInfo);
+        }
+        foreach (var review in user._userReviews)
+        {
+            RemoveUserReview(review);
+        }
+        
+        PersistenceContext.DeleteFromExtent(user);
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace CarsharingSystem.Model;
+﻿using CarsharingSystem.Services;
+
+namespace CarsharingSystem.Model;
 
 public class Host
 {
@@ -48,7 +50,7 @@ public class Host
         {
             throw new InvalidOperationException("Host already contains this offer");
         }
-
+        _offers.Add(offer);
         if (offer.Host != this)
         {
             offer.Host = this;
@@ -62,16 +64,21 @@ public class Host
         offer.DeleteOffer(offer);
         return res;
     }
-
-    public void UpdateVehicle(Offer oldOffer, Offer newOffer)
-    {
-        if(!DeleteOffer(oldOffer)) return;
-        AddOffer(newOffer);
-    }
+    
 
     public void AddDiscountCode(DiscountCode discountCode)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(discountCode);
+
+        if (_discountCodes.Contains(discountCode))
+        {
+            throw new InvalidOperationException("Host already contains this discount code");
+        }
+        _discountCodes.Add(discountCode);
+        if (discountCode.Host != this)
+        {
+            discountCode.Host = this;
+        }
     }
     
     public void UpdateDiscountCode(DiscountCode oldDiscountCode, DiscountCode newDiscountCode)
@@ -86,5 +93,24 @@ public class Host
         var res = _discountCodes.Remove(discountCode);
         discountCode.DeleteDiscountCode();
         return res;
+    }
+
+    public void DeleteHost(Host host)
+    {
+        foreach (var offer in host._offers)
+        {
+            DeleteOffer(offer);
+        }
+
+        foreach (var code in host._discountCodes)
+        {
+            DeleteDiscountCode(code);
+        }
+
+        foreach (var vehicle in _vehicles)
+        {
+            DeleteVehicle(vehicle);
+        }
+        PersistenceContext.DeleteFromExtent(host);
     }
 }

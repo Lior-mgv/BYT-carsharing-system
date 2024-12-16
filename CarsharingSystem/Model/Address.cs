@@ -63,16 +63,13 @@ public class Address
 
     public void UpdateOffer(Offer oldOffer, Offer newOffer)
     {
-        ArgumentNullException.ThrowIfNull(oldOffer);
-        ArgumentNullException.ThrowIfNull(newOffer);
-
         RemoveOffer(oldOffer);
         AddOffer(newOffer);
     }
 
-    public void DeleteAddress()
+    public void DeleteAddress(Address address)
     {
-        foreach (var offer in _offers.ToList()) 
+        foreach (var offer in address._offers.ToList()) 
         {
             RemoveOffer(offer);
         }

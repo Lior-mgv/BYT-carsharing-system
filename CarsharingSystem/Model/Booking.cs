@@ -72,6 +72,16 @@ public class Booking
 
     public void DeleteBooking()
     {
-        throw new NotImplementedException();
+        if (Offer.Bookings.Contains(this))
+        {
+            Offer.RemoveBooking(this);
+        }
+
+        if (Renter.Bookings.Contains(this))
+        {
+            Renter.RemoveBooking(this);
+        }
+
+        PersistenceContext.DeleteFromExtent(this);
     }
 }
