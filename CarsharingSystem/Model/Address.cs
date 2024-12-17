@@ -40,7 +40,7 @@ public class Address
 
         if (_offers.Contains(offer))
         {
-            throw new InvalidOperationException("offer already contains this address");
+            throw new InvalidOperationException("Offer already contains this address");
         }
         _offers.Add(offer);
         if (!offer.Addresses.Contains(this))
@@ -54,7 +54,7 @@ public class Address
         ArgumentNullException.ThrowIfNull(offer);
         
         var res = _offers.Remove(offer);
-        if (offer.Addresses.Contains(this))
+        if (res && offer.Addresses.Contains(this))
         {
             offer.RemoveAddress(this);
         }
@@ -63,7 +63,7 @@ public class Address
 
     public void UpdateOffer(Offer oldOffer, Offer newOffer)
     {
-        RemoveOffer(oldOffer);
+        if(!RemoveOffer(oldOffer)) return;
         AddOffer(newOffer);
     }
 

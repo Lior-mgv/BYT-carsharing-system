@@ -86,8 +86,8 @@ public class Offer
 
     public void UpdateAddress(Address oldAddress, Address newAddress)
     {
+        if(!RemoveAddress(oldAddress)) return;
         AddAddress(newAddress);
-        RemoveAddress(oldAddress);
     }
     
     public void AddOfferReview(OfferReview offerReview)
@@ -116,8 +116,8 @@ public class Offer
 
     public void UpdateOfferReview(OfferReview oldOfferReview, OfferReview newOfferReview)
     {
+        if(!RemoveOfferReview(oldOfferReview)) return;
         AddOfferReview(newOfferReview);
-        RemoveOfferReview(oldOfferReview);
     }
     
     public void AddBooking(Booking booking)
@@ -146,14 +146,8 @@ public class Offer
     
     public void UpdateBooking(Booking oldBooking, Booking newBooking)
     {
+        if(!RemoveBooking(oldBooking)) return;
         AddBooking(newBooking);
-        RemoveBooking(oldBooking);
-    }
-    
-
-    private void RemoveVehicle(Vehicle vehicle)
-    {
-        Vehicle.Offer = null;
     }
     
     public void DeleteOffer(Offer offer)
@@ -173,7 +167,7 @@ public class Offer
             RemoveBooking(booking);
         }
 
-        RemoveVehicle(offer.Vehicle);
+        Vehicle.Offer = null;
         Host.DeleteOffer(this);
 
         PersistenceContext.DeleteFromExtent(this);

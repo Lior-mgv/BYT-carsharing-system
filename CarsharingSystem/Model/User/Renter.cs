@@ -55,8 +55,8 @@ public class Renter
     
     public void UpdateOfferReview(OfferReview oldReview, OfferReview newReview)
     {
+        if(!RemoveOfferReview(oldReview)) return;
         AddOfferReview(newReview);
-        RemoveOfferReview(oldReview);
     }
 
     public void AddBooking(Booking booking)
@@ -85,8 +85,8 @@ public class Renter
     
     public void UpdateBooking(Booking oldBooking, Booking newBooking)
     {
+        if(!RemoveBooking(oldBooking)) return;
         AddBooking(newBooking);
-        RemoveBooking(oldBooking);
     }
     
     public void DeleteRenter(Renter renter)

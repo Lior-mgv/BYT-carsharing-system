@@ -70,13 +70,13 @@ public class DiscountCode
     
     public void UpdateBooking(Booking oldBooking, Booking newBooking)
     {
-        DeleteBooking(oldBooking);
+        if(!DeleteBooking(oldBooking)) return;
         AddBooking(newBooking);
     }
     public void DeleteDiscountCode()
     {
         Host.DeleteDiscountCode(this);
-        foreach (var booking in _bookings)
+        foreach (var booking in _bookings.ToList())
         {
             booking.DeleteDiscountCode(_code);
         }

@@ -77,7 +77,7 @@ public class Booking
 
     public void UpdateDiscountCode(string oldCode, DiscountCode newDiscountCode)
     {
-        DeleteDiscountCode(oldCode);
+        if(!DeleteDiscountCode(oldCode)) return;
         AddDiscountCode(newDiscountCode);
     }
 
