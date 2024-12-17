@@ -28,14 +28,12 @@ public class User
     {
     }
 
-    public User(string firstName, string lastName, string email, string phoneNumber, Host? hostInfo, Renter? renterInfo)
+    public User(string firstName, string lastName, string email, string phoneNumber)
     {
         FirstName = firstName;
         LastName = lastName;
         Email = email;
         PhoneNumber = phoneNumber;
-        HostInfo = hostInfo;
-        RenterInfo = renterInfo;
         ValidationHelpers.ValidateObject(this);
         PersistenceContext.AddToExtent(this);
     }

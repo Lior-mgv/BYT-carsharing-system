@@ -12,8 +12,8 @@ namespace TestProject
             var date = DateTime.Now;
             var score = 4;
             var comment = "Excellent user!";
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321");
 
             var userReview = new UserReview(date, score, comment, reviewer, reviewee);
 
@@ -28,8 +28,8 @@ namespace TestProject
         public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321");
 
             // Missing Reviewee
             Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", reviewer, null!));
@@ -42,8 +42,8 @@ namespace TestProject
         public void Constructor_InvalidScore_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321");
 
             // Score less than 1
             Assert.Throws<ValidationException>(() => new UserReview(date, 0, "Too low score", reviewer, reviewee));

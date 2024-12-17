@@ -44,20 +44,43 @@ public class DiscountCode
 
     public void AddBooking(Booking booking)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(booking);
+
+        if (_bookings.Contains(booking))
+        {
+            throw new InvalidOperationException("Booking already exists");
+        }
+        
+        _bookings.Add(booking);
+        if (!booking.DiscountCodes.ContainsKey(Code))
+        {
+            booking.AddDiscountCode(this);
+        }
     }
     
     public bool DeleteBooking(Booking booking)
     {
-        throw new NotImplementedException();
+        var res = _bookings.Remove(booking);
+        if (res && booking.DiscountCodes.ContainsKey(Code))
+        {
+            booking.DeleteDiscountCode(_code);   
+        }
+        return res;
     }
     
     public void UpdateBooking(Booking oldBooking, Booking newBooking)
     {
-        throw new NotImplementedException();
+        DeleteBooking(oldBooking);
+        AddBooking(newBooking);
     }
     public void DeleteDiscountCode()
     {
-        throw new NotImplementedException();
+        Host.DeleteDiscountCode(this);
+        foreach (var booking in _bookings)
+        {
+            booking.DeleteDiscountCode(_code);
+        }
+        
+        PersistenceContext.DeleteFromExtent(this);
     }
 }

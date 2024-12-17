@@ -14,9 +14,10 @@ namespace TestProject
             var convenienceScore = 3;
             var communicationScore = 4;
             var comment = "Great experience!";
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
 
             var offerReview = new OfferReview(date, cleanlinessScore, maintenanceScore, convenienceScore, communicationScore, comment, renter, offer);
 
@@ -35,9 +36,10 @@ namespace TestProject
         public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
 
             // Missing Offer
             Assert.Throws<ValidationException>(() => new OfferReview(date, 4, 4, 4, 4, "Good service", renter, null));
@@ -50,9 +52,10 @@ namespace TestProject
         public void Constructor_InvalidScore_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
 
             // Invalid CleanlinessScore
             Assert.Throws<ValidationException>(() => new OfferReview(date, 0, 4, 4, 4, "Comment", renter, offer));
@@ -75,9 +78,10 @@ namespace TestProject
         public void AverageScore_ShouldCalculateCorrectly()
         {
             var date = DateTime.Now;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
 
             var offerReview = new OfferReview(date, 5, 4, 3, 2, "Feedback", renter, offer);
 

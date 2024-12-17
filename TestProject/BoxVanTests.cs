@@ -12,7 +12,8 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Manual;
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var host = new Host(user);
             var boxVolume = 20.0;
 
             var boxVan = new BoxVan(model, numOfSeats, numOfDoors, transmissionType, null, null, null, host, boxVolume);
@@ -32,7 +33,8 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Manual;
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var host = new Host(user);
             var invalidBoxVolume = 0.0; // Invalid box volume, must be greater than 0
 
             Assert.Throws<ValidationException>(() =>

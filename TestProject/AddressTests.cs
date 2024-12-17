@@ -45,7 +45,8 @@ namespace TestProject
             var street = "Main Street";
             var buildingNumber = 123;
             var postalCode = "10001";
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var host = new Host(user);
             var address = new Address(city, street, buildingNumber, postalCode);
 
             var vehicle = new PassengerCar();

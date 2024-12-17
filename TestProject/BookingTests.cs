@@ -12,9 +12,10 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(3);
             var status = BookingStatus.Pending;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user,"12345");
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var host = new Host(user);
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
             var booking = new Booking(startDate, endDate, status, renter, offer);
@@ -33,9 +34,10 @@ namespace TestProject
             var endDate = startDate.AddDays(3);
             var totalPrice = 100m;
             var status = BookingStatus.Pending;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var host = new Host(user);
             
             // Missing offer
             Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, null));
@@ -54,9 +56,10 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(-3); // End date before start date
             var status = BookingStatus.Pending;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var host = new Host(user);
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
             Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, offer));
@@ -75,9 +78,10 @@ namespace TestProject
             var endDate = new DateTime(2023, 10, 5); // 4 days
             var pricePerDay = 100m;
             var status = BookingStatus.Pending;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var host = new Host(user);
             var offer = new Offer(pricePerDay, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
             var booking = new Booking(startDate, endDate, status, renter, offer);
@@ -93,9 +97,10 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(-3); // End date before start date
             var status = BookingStatus.Pending;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var host = new Host(user);
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
             Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, offer));

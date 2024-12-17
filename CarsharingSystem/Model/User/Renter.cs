@@ -1,10 +1,25 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
 public class Renter
 {
+    public Renter(User user, string drivingLicenseNumber)
+    {
+        this.User = user;
+        DrivingLicenseNumber = drivingLicenseNumber;
+    }
+
+    [JsonConstructor]
+    private Renter()
+    {
+    }
+
+    [Required]
+    public User User { get; set; }
+
     [Required]
     public string DrivingLicenseNumber { get; set; }
 
@@ -85,6 +100,7 @@ public class Renter
         {
             RemoveOfferReview(review);
         }
-        PersistenceContext.DeleteFromExtent(renter);
+        
+        User.RenterInfo = null;
     }
 }

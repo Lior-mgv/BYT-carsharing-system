@@ -14,7 +14,7 @@ namespace TestProject
             var email = "john.doe@example.com";
             var phoneNumber = "1234567890";
         
-            var user = new User(firstName, lastName, email, phoneNumber, null, null);
+            var user = new User(firstName, lastName, email, phoneNumber);
         
             Assert.AreEqual(firstName, user.FirstName);
             Assert.AreEqual(lastName, user.LastName);
@@ -27,22 +27,23 @@ namespace TestProject
         [Test]
         public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
         {
-            Assert.Throws<ValidationException>(() => new User(null, "Doe", "john.doe@example.com", "1234567890", null, null));
-            Assert.Throws<ValidationException>(() => new User("John", null, "john.doe@example.com", "1234567890", null, null));
-            Assert.Throws<ValidationException>(() => new User("John", "Doe", "john.doe@example.com", null, null, null));
+            Assert.Throws<ValidationException>(() => new User(null, "Doe", "john.doe@example.com", "1234567890"));
+            Assert.Throws<ValidationException>(() => new User("John", null, "john.doe@example.com", "1234567890"));
+            Assert.Throws<ValidationException>(() => new User("John", "Doe", "john.doe@example.com", null));
         }
 
         [Test]
         public void Constructor_InvalidEmail_ShouldThrowValidationException()
         {
-            Assert.Throws<ValidationException>(() => new User("John", "Doe", "not-an-email", "1234567890", null, null));
+            Assert.Throws<ValidationException>(() => new User("John", "Doe", "not-an-email", "1234567890"));
         }
 
         [Test]
         public void IsRenter_ShouldReturnTrue_WhenRenterInfoIsProvided()
         {
-            var renterInfo = new Renter();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, renterInfo);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var renterInfo = new Renter(user, "12345");
+            user.RenterInfo = renterInfo;
 
             Assert.IsTrue(user.IsRenter);
         }
@@ -50,8 +51,9 @@ namespace TestProject
         [Test]
         public void IsHost_ShouldReturnTrue_WhenHostInfoIsProvided()
         {
-            var hostInfo = new Host();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", hostInfo, null);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var hostInfo = new Host(user);
+            user.HostInfo = hostInfo;
 
             Assert.IsTrue(user.IsHost);
         }

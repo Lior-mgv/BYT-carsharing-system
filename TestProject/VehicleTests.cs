@@ -17,8 +17,9 @@ namespace TestProject
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
             GasVehicle? gasVehicleInfo = null;
-            var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var host = new Host(user);
+            var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
             var vehicle = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, offer, host, 10.0);
 
@@ -40,7 +41,8 @@ namespace TestProject
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var host = new Host(user);
 
             // Missing Model
             Assert.Throws<ValidationException>(() => new Truck(null, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, null, null, host, 10.0));
@@ -58,28 +60,32 @@ namespace TestProject
         [Test]
         public void IsElectric_ShouldReturnTrue_WhenElectricVehicleInfoIsNotNull()
         {
-            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 }, null, null, new Host(), 10.0);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 }, null, null, new Host(user), 10.0);
             Assert.IsTrue(vehicle.IsElectric);
         }
 
         [Test]
         public void IsGas_ShouldReturnTrue_WhenGasVehicleInfoIsNotNull()
         {
-            var vehicle = new Truck("Toyota Camry", 4, 4, TransmissionType.Automatic, null, new GasVehicle { FuelType = "Petrol", FuelConsumption = 10 }, null, new Host(), 10.0);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var vehicle = new Truck("Toyota Camry", 4, 4, TransmissionType.Automatic, null, new GasVehicle { FuelType = "Petrol", FuelConsumption = 10 }, null, new Host(user), 10.0);
             Assert.IsTrue(vehicle.IsGas);
         }
 
         [Test]
         public void AdditionalFeatures_ShouldBeEmptyByDefault()
         {
-            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(), 10.0);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(user), 10.0);
             Assert.IsEmpty(vehicle.AdditionalFeatures);
         }
 
         [Test]
         public void AddFeature_ShouldAddFeatureToList()
         {
-            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(), 10.0);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(user), 10.0);
             vehicle.AdditionalFeatures.Add("GPS");
             Assert.Contains("GPS", vehicle.AdditionalFeatures);
         }
