@@ -21,7 +21,7 @@ public class Host
         {
             throw new InvalidOperationException("Host already contains this vehicle");
         }
-
+        _vehicles.Add(vehicle);
         if (vehicle.Host != this)
         {
             vehicle.Host = this;
@@ -31,9 +31,17 @@ public class Host
     public bool DeleteVehicle(Vehicle vehicle)
     {
         ArgumentNullException.ThrowIfNull(vehicle);
-        var res = _vehicles.Remove(vehicle);
-        vehicle.DeleteVehicle();
-        return res;
+        if (_vehicles.Contains(vehicle))
+        {
+            var res = _vehicles.Remove(vehicle);
+            vehicle.DeleteVehicle();
+            
+            return res;
+        }else
+        {
+            throw new InvalidCastException("Host does not contain this vehicle");
+        }
+        
     }
 
     public void UpdateVehicle(Vehicle oldVehicle, Vehicle newVehicle)
@@ -97,17 +105,17 @@ public class Host
 
     public void DeleteHost(Host host)
     {
-        foreach (var offer in host._offers)
+        foreach (var offer in host._offers.ToList())
         {
             DeleteOffer(offer);
         }
 
-        foreach (var code in host._discountCodes)
+        foreach (var code in host._discountCodes.ToList())
         {
             DeleteDiscountCode(code);
         }
 
-        foreach (var vehicle in _vehicles)
+        foreach (var vehicle in _vehicles.ToList())
         {
             DeleteVehicle(vehicle);
         }

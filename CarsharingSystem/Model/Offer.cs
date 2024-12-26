@@ -174,8 +174,10 @@ public class Offer
         }
 
         RemoveVehicle(offer.Vehicle);
-        Host.DeleteOffer(this);
-
+        if (Host.Offers.Contains(offer))
+        {
+            Host.DeleteOffer(this);
+        }
         PersistenceContext.DeleteFromExtent(this);
     }
 }
