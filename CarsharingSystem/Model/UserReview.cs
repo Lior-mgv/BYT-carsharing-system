@@ -34,8 +34,16 @@ public class UserReview
     {
     }
 
-    public void DeleteUserReview()
+    public void DeleteUserReview(UserReview review)
     {
-        throw new NotImplementedException();
+        if (review.Reviewer != null)
+        {
+            review.Reviewer.RemoveUserReview(review);
+        }
+
+        if (review.Reviewee != null)
+        {
+            review.Reviewee.RemoveUserReview(review);
+        }
     }
 }

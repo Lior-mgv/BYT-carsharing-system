@@ -13,11 +13,16 @@ public class Offer
     public string Description { get; set; }
     [Range(14,25)]
     public int? MinimalAge { get; set; }
+    
     private readonly List<OfferReview> _offerReviews = [];
     public List<OfferReview> OfferReviews => [.._offerReviews];
+    
     private readonly List<Address> _addresses = [];
     public List<Address> Addresses => [.._addresses];
-    public List<Booking> Bookings { get; set; } = [];
+    
+    private readonly List<Booking> _bookings = [];
+    public List<Booking> Bookings => [.._bookings];
+    
     [Required]
     public Vehicle Vehicle { get; set; }
 
@@ -48,7 +53,7 @@ public class Offer
             throw new MissingFieldException("Offer must have at least one address");
         }
         Host.AddOffer(this);
-        
+        Vehicle.Offer = this;
         PersistenceContext.AddToExtent(this);
     }
 
@@ -67,17 +72,22 @@ public class Offer
         }
     }
 
-    public bool DeleteAddress(Address address)
+    public bool RemoveAddress(Address address)
     {
         ArgumentNullException.ThrowIfNull(address);
-        
-        var res = _addresses.Remove(address);
-        if (address.Offers.Contains(this))
-        {
-            address.DeleteOffer(this);
-        }
 
-        return res;
+        var removed = _addresses.Remove(address);
+        if (removed && address.Offers.Contains(this))
+        {
+            address.RemoveOffer(this);
+        }
+        return removed;
+    }
+
+    public void UpdateAddress(Address oldAddress, Address newAddress)
+    {
+        AddAddress(newAddress);
+        RemoveAddress(oldAddress);
     }
     
     public void AddOfferReview(OfferReview offerReview)
@@ -95,38 +105,68 @@ public class Offer
         }
     }
     
-    public bool DeleteOfferReview(OfferReview offerReview)
+    public bool RemoveOfferReview(OfferReview review)
     {
-        ArgumentNullException.ThrowIfNull(offerReview);
-        
-        var res = _offerReviews.Remove(offerReview);
-        
-        offerReview.DeleteOfferReview();
+        ArgumentNullException.ThrowIfNull(review);
 
+        var res = _offerReviews.Remove(review);
+        review.DeleteReview();
         return res;
     }
-
-    public void DeleteOffer()
-    {
-        foreach (var offerReview in _offerReviews)
-        {
-            PersistenceContext.DeleteFromExtent(offerReview);
-        }
-        PersistenceContext.DeleteFromExtent(this);
-    }
+    
     
     public void AddBooking(Booking booking)
     {
-        throw new NotImplementedException();
-    }
-    
-    public void UpdateBooking(Booking oldBooking, Booking newBooking)
-    {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(booking);
+
+        if (_bookings.Contains(booking))
+        {
+            throw new InvalidOperationException("Offer already contains this booking");
+        }
+        _bookings.Add(booking);
+        if (booking.Offer != this)
+        {
+            booking.Offer = this;
+        }
     }
 
-    public bool DeleteBooking(Booking booking)
+    public bool RemoveBooking(Booking booking)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(booking);
+        
+        var res = _bookings.Remove(booking);
+        booking.DeleteBooking();
+        return res;
+    }
+
+    
+    private void RemoveVehicle(Vehicle vehicle)
+    {
+        Vehicle.Offer = null;
+    }
+    
+    public void DeleteOffer(Offer offer)
+    {
+        foreach (var address in offer._addresses.ToList())
+        {
+            RemoveAddress(address);
+        }
+
+        foreach (var review in offer._offerReviews.ToList())
+        {
+            RemoveOfferReview(review);
+        }
+
+        foreach (var booking in offer._bookings.ToList())
+        {
+            RemoveBooking(booking);
+        }
+
+        RemoveVehicle(offer.Vehicle);
+        if (Host.Offers.Contains(offer))
+        {
+            Host.DeleteOffer(this);
+        }
+        PersistenceContext.DeleteFromExtent(this);
     }
 }

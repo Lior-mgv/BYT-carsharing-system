@@ -14,20 +14,32 @@ public class User
     public string Email { get; set; }
     [Required]
     public string PhoneNumber { get; set; }
-    
+
     public Host? HostInfo { get; set; }
     public Renter? RenterInfo { get; set; }
-    
+
     public bool IsRenter => RenterInfo != null;
     public bool IsHost => HostInfo != null;
-    private readonly List<UserReview> _userReviewsWritten = [];
-    public List<UserReview> UserReviewsWritten => [.._userReviewsWritten];
-    private readonly List<UserReview> _userReviewsReceived = [];
-    public List<UserReview> UserReviewsReceived => [.._userReviewsReceived];
-    
+    private readonly List<UserReview> _userReviews = new();
+    public List<UserReview> UserReviews => _userReviews;
+
     [JsonConstructor]
     private User()
     {
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is User other)
+        {
+            return this.Email == other.Email;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return Email.GetHashCode();
     }
 
     public User(string firstName, string lastName, string email, string phoneNumber, Host? hostInfo, Renter? renterInfo)
@@ -42,37 +54,63 @@ public class User
         PersistenceContext.AddToExtent(this);
     }
 
-    public void AddUserReviewWritten(UserReview review)
+    public void AddUserReview(UserReview review)
     {
-        throw new NotImplementedException();
-    }
-    
-    public void UpdateUserReviewWritten(UserReview oldReview, UserReview newReview)
-    {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(review);
+
+        if (_userReviews.Contains(review))
+        {
+            throw new InvalidOperationException("Review already exists in written reviews.");
+        }
+
+        _userReviews.Add(review);
+
+        if (review.Reviewer != this)
+        {
+            review.Reviewer = this;
+        }
     }
 
-    public bool DeleteUserReviewWritten(UserReview review)
+    public bool RemoveUserReview(UserReview review)
     {
-        throw new NotImplementedException();
-    }
-    public void AddUserReviewReceived(UserReview review)
-    {
-        throw new NotImplementedException();
-    }
-    
-    public void UpdateUserReviewReceived(UserReview oldReview, UserReview newReview)
-    {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(review);
+        var res = _userReviews.Remove(review);
+        if (res)
+        {
+            if (review.Reviewer == this)
+            {
+                review.Reviewee?.RemoveUserReview(review);
+            }
+            else if (review.Reviewee == this)
+            {
+                review.Reviewer?.RemoveUserReview(review);
+            }
+        }
+        return res;
     }
 
-    public bool DeleteUserReviewReceived(UserReview review)
+    public void UpdateUserReview(UserReview oldReview, UserReview newReview)
     {
-        throw new NotImplementedException();
+        AddUserReview(newReview);
+        RemoveUserReview(oldReview);
     }
 
-    public void DeleteUser()
+    public void DeleteUser(User user)
     {
-        throw new NotImplementedException();
+        if (user.IsHost)
+        {
+            user.HostInfo?.DeleteHost(user.HostInfo);
+        }
+
+        if (user.IsRenter)
+        {
+            user.RenterInfo?.DeleteRenter(user.RenterInfo);
+        }
+        foreach (var review in user._userReviews.ToList())
+        {
+            RemoveUserReview(review);
+        }
+
+        PersistenceContext.DeleteFromExtent(user);
     }
 }

@@ -69,7 +69,7 @@ Truck vehicle2 = new Truck(
     transmissionType: TransmissionType.Automatic,
     electricVehicleInfo: electricVehicleInfo2,
     gasVehicleInfo: null, // Assuming no GasVehicle info is needed
-    offer: null, // Offer will be set separately
+    offer: null, // offer will be set separately
     host: user1.HostInfo,
     bedLength: 15
 );
@@ -78,7 +78,7 @@ hostInfo1.Vehicles.Add(vehicle1);
 hostInfo1.Vehicles.Add(vehicle2);
 
 // Create offer1 using the public constructor
-// Offer offer1 = new Offer(
+// offer offer1 = new offer(
 //     pricePerDay: 99.99m,
 //     description: "Tesla Model S - Luxury Electric Sedan",
 //     minimalAge: 25,
@@ -93,7 +93,7 @@ var address = new Address("city", "street", 5, "postcode");
 // offer1.DeleteAddress(address);
 //
 // // Create offer2 using the public constructor
-// Offer offer2 = new Offer(
+// offer offer2 = new offer(
 //     pricePerDay: 49.99m,
 //     description: "Toyota Corolla - Reliable Sedan",
 //     minimalAge: 21,

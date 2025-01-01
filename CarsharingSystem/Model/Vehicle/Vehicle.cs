@@ -48,7 +48,6 @@ public abstract class Vehicle
         {
             throw new ValidationException("Host cannot be null");
         }
-
         host.AddVehicle(this);
     }
 
@@ -58,7 +57,7 @@ public abstract class Vehicle
         {
             Host.DeleteVehicle(this);
         }
-        Offer?.DeleteOffer();
+        Offer?.DeleteOffer(Offer);
         PersistenceContext.DeleteFromExtent(this);
     }
 }

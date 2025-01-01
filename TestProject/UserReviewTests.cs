@@ -1,55 +1,97 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using CarsharingSystem.Model;
-
 
 namespace TestProject
 {
     public class UserReviewTests
     {
         [Test]
-        public void Constructor_ValidParameters_ShouldCreateUserReview()
+        public void Reviewer_AddingUserReview_ShouldIncludeReviewInUserReviews()
         {
-            var date = DateTime.Now;
-            var score = 4;
-            var comment = "Excellent user!";
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
 
-            var userReview = new UserReview(date, score, comment, reviewer, reviewee);
+            reviewer.AddUserReview(review);
 
-            Assert.That(userReview.Date, Is.EqualTo(date));
-            Assert.That(userReview.Score, Is.EqualTo(score));
-            Assert.That(userReview.Comment, Is.EqualTo(comment));
-            Assert.That(userReview.Reviewer, Is.EqualTo(reviewer));
-            Assert.That(userReview.Reviewee, Is.EqualTo(reviewee));
+            Assert.That(reviewer.UserReviews, Contains.Item(review));
         }
 
         [Test]
-        public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
+        public void Reviewee_AddingUserReview_ShouldIncludeReviewInUserReviews()
         {
-            var date = DateTime.Now;
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
 
-            // Missing Reviewee
-            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", reviewer, null!));
+            reviewee.AddUserReview(review);
 
-            // Missing Reviewer
-            Assert.Throws<ValidationException>(() => new UserReview(date, 4, "Good user", null!, reviewee));
+            Assert.That(reviewee.UserReviews, Contains.Item(review));
         }
 
         [Test]
-        public void Constructor_InvalidScore_ShouldThrowValidationException()
+        public void DeleteUserReview_ShouldRemoveReviewFromBothUsers()
         {
-            var date = DateTime.Now;
-            var reviewer = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
-            var reviewee = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
 
-            // Score less than 1
-            Assert.Throws<ValidationException>(() => new UserReview(date, 0, "Too low score", reviewer, reviewee));
 
-            // Score greater than 5
-            Assert.Throws<ValidationException>(() => new UserReview(date, 6, "Too high score", reviewer, reviewee));
+            review.DeleteUserReview(review);
+
+            Assert.That(reviewer.UserReviews, Does.Not.Contain(review));
+            Assert.That(reviewee.UserReviews, Does.Not.Contain(review));
+        }
+
+        [Test]
+        public void AddingDuplicateUserReview_ShouldThrowException()
+        {
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
+
+            reviewer.AddUserReview(review);
+
+            Assert.Throws<InvalidOperationException>(() => reviewer.AddUserReview(review));
+        }
+
+        [Test]
+        public void RemovingNonexistentUserReview_ShouldNotThrowException()
+        {
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
+
+            Assert.DoesNotThrow(() => reviewer.RemoveUserReview(review));
+        }
+
+        [Test]
+        public void Reviewee_RemoveUserReview_ShouldRemoveFromUserReviews()
+        {
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, reviewee);
+
+            reviewee.AddUserReview(review);
+            reviewee.RemoveUserReview(review);
+
+            Assert.That(reviewee.UserReviews, Does.Not.Contain(review));
+        }
+
+        [Test]
+        public void Reviewer_UpdateUserReview_ShouldUpdateInUserReviews()
+        {
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var reviewee = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var oldReview = new UserReview(DateTime.Now, 4, "Good service.", reviewer, reviewee);
+            var newReview = new UserReview(DateTime.Now, 5, "Excellent service!", reviewer, reviewee);
+
+            reviewer.AddUserReview(oldReview);
+            reviewer.UpdateUserReview(oldReview, newReview);
+
+            Assert.That(reviewer.UserReviews, Does.Not.Contain(oldReview));
+            Assert.That(reviewer.UserReviews, Contains.Item(newReview));
         }
     }
 }

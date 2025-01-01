@@ -37,7 +37,7 @@ namespace TestProject
             var vehicle = new PassengerCar();
             var host = new Host();
             
-            // Missing Offer
+            // Missing offer
             Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, null));
             
             // Missing Renter
