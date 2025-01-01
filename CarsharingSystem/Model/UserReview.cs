@@ -36,15 +36,14 @@ public class UserReview
 
     public void DeleteUserReview(UserReview review)
     {
-        if (Reviewer.UserReviews.Contains(this))
+        if (review.Reviewer != null)
         {
-            Reviewer.RemoveUserReview(this);
+            review.Reviewer.RemoveUserReview(review);
         }
 
-        if (Reviewee.UserReviews.Contains(this))
+        if (review.Reviewee != null)
         {
-            Reviewee.RemoveUserReview(this);
+            review.Reviewee.RemoveUserReview(review);
         }
-        PersistenceContext.DeleteFromExtent(this);
     }
 }

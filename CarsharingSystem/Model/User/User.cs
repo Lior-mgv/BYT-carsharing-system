@@ -14,18 +14,32 @@ public class User
     public string Email { get; set; }
     [Required]
     public string PhoneNumber { get; set; }
-    
+
     public Host? HostInfo { get; set; }
     public Renter? RenterInfo { get; set; }
-    
+
     public bool IsRenter => RenterInfo != null;
     public bool IsHost => HostInfo != null;
-    private readonly List<UserReview> _userReviews = [];
-    public List<UserReview> UserReviews => [.._userReviews];
-    
+    private readonly List<UserReview> _userReviews = new();
+    public List<UserReview> UserReviews => _userReviews;
+
     [JsonConstructor]
     private User()
     {
+    }
+
+    public override bool Equals(object obj)
+    {
+        if (obj is User other)
+        {
+            return this.Email == other.Email;
+        }
+        return false;
+    }
+
+    public override int GetHashCode()
+    {
+        return Email.GetHashCode();
     }
 
     public User(string firstName, string lastName, string email, string phoneNumber, Host? hostInfo, Renter? renterInfo)
@@ -48,7 +62,7 @@ public class User
         {
             throw new InvalidOperationException("Review already exists in written reviews.");
         }
-        
+
         _userReviews.Add(review);
 
         if (review.Reviewer != this)
@@ -56,15 +70,25 @@ public class User
             review.Reviewer = this;
         }
     }
-    
+
     public bool RemoveUserReview(UserReview review)
     {
         ArgumentNullException.ThrowIfNull(review);
         var res = _userReviews.Remove(review);
-        review.DeleteUserReview(review);
+        if (res)
+        {
+            if (review.Reviewer == this)
+            {
+                review.Reviewee?.RemoveUserReview(review);
+            }
+            else if (review.Reviewee == this)
+            {
+                review.Reviewer?.RemoveUserReview(review);
+            }
+        }
         return res;
     }
-    
+
     public void UpdateUserReview(UserReview oldReview, UserReview newReview)
     {
         AddUserReview(newReview);
@@ -82,11 +106,11 @@ public class User
         {
             user.RenterInfo?.DeleteRenter(user.RenterInfo);
         }
-        foreach (var review in user._userReviews)
+        foreach (var review in user._userReviews.ToList())
         {
             RemoveUserReview(review);
         }
-        
+
         PersistenceContext.DeleteFromExtent(user);
     }
 }

@@ -61,12 +61,6 @@ public class Address
         return res;
     }
 
-    public void UpdateOffer(Offer oldOffer, Offer newOffer)
-    {
-        RemoveOffer(oldOffer);
-        AddOffer(newOffer);
-    }
-
     public void DeleteAddress(Address address)
     {
         foreach (var offer in address._offers.ToList()) 

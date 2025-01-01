@@ -159,17 +159,56 @@ namespace TestProject
         }
         
         [Test]
-        public void UpdateAddress_NullOldAddress_ShouldThrowArgumentNullException()
+        public void UpdateAddress_ValidAddresses_ShouldUpdateSuccessfully()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var oldAddress = new Address("OldCity", "OldStreet", 1, "OldPostalCode");
+            var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host());
 
-            Assert.Throws<ArgumentNullException>(() => offer.UpdateAddress(null, new Address("NewCity", "NewStreet", 2, "NewPostalCode")));
+            offer.UpdateAddress(oldAddress, newAddress);
+
+            Assert.That(offer.Addresses, Does.Not.Contain(oldAddress));
+            Assert.That(offer.Addresses, Contains.Item(newAddress));
+            Assert.That(newAddress.Offers, Contains.Item(offer));
+            Assert.That(oldAddress.Offers, Does.Not.Contain(offer));
         }
 
-        // [Test]
-        // public void DeleteOfferShouldDeleteAssociations(Offer offer)
-        // {
-        //     throw new NotImplementedException();
-        // }
+        [Test]
+        public void UpdateAddress_NullOldAddress_ShouldThrowArgumentNullException()
+        {
+            var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+
+            Assert.Throws<ArgumentNullException>(() => offer.UpdateAddress(null, newAddress));
+        }
+
+        [Test]
+        public void UpdateAddress_NullNewAddress_ShouldThrowArgumentNullException()
+        {
+            var oldAddress = new Address("OldCity", "OldStreet", 1, "OldPostalCode");
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host());
+
+            Assert.Throws<ArgumentNullException>(() => offer.UpdateAddress(oldAddress, null));
+        }
+        
+        [Test]
+        public void DeleteOfferShouldDeleteAssociations()
+        {
+            var address = new Address("City", "Street", 1, "PostalCode");
+            var host = new Host();
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, host);
+            var review = new OfferReview(DateTime.Now, 5, 5, 5, 5, "Comment", new Renter(), offer);
+            var booking = new Booking(DateTime.Now, DateTime.MaxValue, BookingStatus.Pending, new Renter(), offer);
+
+            // Act
+            offer.DeleteOffer(offer);
+
+            // Assert
+            Assert.That(address.Offers, Does.Not.Contain(offer));
+            Assert.That(host.Offers, Does.Not.Contain(offer));
+            Assert.That(offer.OfferReviews, Is.Empty);
+            Assert.That(offer.Bookings, Is.Empty);
+        }
+
     }
 }

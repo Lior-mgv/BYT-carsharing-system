@@ -83,5 +83,17 @@ namespace TestProject
             vehicle.AdditionalFeatures.Add("GPS");
             Assert.Contains("GPS", vehicle.AdditionalFeatures);
         }
+
+        [Test]
+        public void DeleteVehicleShouldDeleteAllTheAssociationsWithIt()
+        {
+            var host = new Host();
+            var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, host, 10.0);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address> { new Address("City", "Street", 1, "PostalCode") }, host);
+            
+            vehicle.DeleteVehicle();
+            Assert.That(host.Vehicles, Does.Not.Contain(vehicle));
+            Assert.That(host.Offers, Does.Not.Contain(offer));
+        }
     }
 }
