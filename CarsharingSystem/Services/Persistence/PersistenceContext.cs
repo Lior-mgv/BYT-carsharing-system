@@ -69,4 +69,13 @@ public static class PersistenceContext
             list.Add(obj);
         }
     }
+
+    //Thought about adding this function when was finishing the tests. Then I understood, that I will need to redo all the tests. Not doing that. But still may be good to have it.
+    // public static bool ContainsInExtent<T>(T obj)
+    // {
+    //     if (!TypeToExtentMap.TryGetValue(typeof(T), out var list)) return false;
+    //     if (!list.Contains(obj)) return false;
+    //     return true;
+    // }
+    
 }

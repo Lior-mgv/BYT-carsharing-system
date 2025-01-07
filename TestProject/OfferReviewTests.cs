@@ -87,5 +87,24 @@ namespace TestProject
 
             Assert.That(offerReview.AverageScore, Is.EqualTo(3.5));
         }
+        
+        [Test]
+        public void DeleteReview_ShouldRemoveAssociations()
+        {
+            // Arrange
+            var date = DateTime.Now;
+            var renter = new Renter();
+            var vehicle = new PassengerCar();
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address> { new Address("city", "Street", 1, "PostalCode") }, new Host());
+            var offerReview = new OfferReview(date, 5, 4, 3, 2, "Great experience", renter, offer);
+
+            // Act
+            offerReview.DeleteReview();
+
+            // Assert
+            Assert.That(offer.OfferReviews, Does.Not.Contain(offerReview));
+            Assert.That(renter.OfferReviews, Does.Not.Contain(offerReview));
+        }
+
     }
 }

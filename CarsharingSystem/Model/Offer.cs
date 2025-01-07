@@ -113,12 +113,7 @@ public class Offer
         review.DeleteReview();
         return res;
     }
-
-    public void UpdateOfferReview(OfferReview oldOfferReview, OfferReview newOfferReview)
-    {
-        if(!RemoveOfferReview(oldOfferReview)) return;
-        AddOfferReview(newOfferReview);
-    }
+    
     
     public void AddBooking(Booking booking)
     {
@@ -143,11 +138,11 @@ public class Offer
         booking.DeleteBooking();
         return res;
     }
+
     
-    public void UpdateBooking(Booking oldBooking, Booking newBooking)
+    private void RemoveVehicle(Vehicle vehicle)
     {
-        if(!RemoveBooking(oldBooking)) return;
-        AddBooking(newBooking);
+        Vehicle.Offer = null;
     }
     
     public void DeleteOffer(Offer offer)
@@ -167,9 +162,11 @@ public class Offer
             RemoveBooking(booking);
         }
 
-        Vehicle.Offer = null;
-        Host.DeleteOffer(this);
-
+        RemoveVehicle(offer.Vehicle);
+        if (Host.Offers.Contains(offer))
+        {
+            Host.DeleteOffer(this);
+        }
         PersistenceContext.DeleteFromExtent(this);
     }
 }

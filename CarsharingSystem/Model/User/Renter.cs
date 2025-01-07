@@ -35,7 +35,7 @@ public class Renter
 
         if (_offerReviews.Contains(offerReview))
         {
-            throw new InvalidOperationException("Offer review already contains this renter");
+            throw new InvalidOperationException("Offer review already contains this offer review");
         }
         _offerReviews.Add(offerReview);
         if (offerReview.Renter != this)
@@ -51,12 +51,6 @@ public class Renter
         var res = _offerReviews.Remove(review);
         review.DeleteReview();
         return res;
-    }
-    
-    public void UpdateOfferReview(OfferReview oldReview, OfferReview newReview)
-    {
-        if(!RemoveOfferReview(oldReview)) return;
-        AddOfferReview(newReview);
     }
 
     public void AddBooking(Booking booking)
@@ -83,20 +77,17 @@ public class Renter
         return res;
     }
     
-    public void UpdateBooking(Booking oldBooking, Booking newBooking)
-    {
-        if(!RemoveBooking(oldBooking)) return;
-        AddBooking(newBooking);
-    }
     
     public void DeleteRenter(Renter renter)
     {
-        foreach (var booking in _bookings)
+        if (renter == null) throw new ArgumentNullException(nameof(renter));
+        
+        foreach (var booking in renter.Bookings.ToList())
         {
             RemoveBooking(booking);
         }
 
-        foreach (var review in _offerReviews)
+        foreach (var review in renter.OfferReviews.ToList())
         {
             RemoveOfferReview(review);
         }

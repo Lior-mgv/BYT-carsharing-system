@@ -1,7 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CarsharingSystem.Model;
 
-
 namespace TestProject
 {
     public class UserTests
@@ -57,5 +56,38 @@ namespace TestProject
 
             Assert.IsTrue(user.IsHost);
         }
+        
+        [Test]
+        public void RemoveUserReview_ValidReview_ShouldRemoveFromList()
+        {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, user);
+
+            user.AddUserReview(review);
+            var result = user.RemoveUserReview(review);
+
+            Assert.IsTrue(result);
+            Assert.That(user.UserReviews, Does.Not.Contain(review));
+        }
+        
+        [Test]
+        public void DeleteUser_ShouldRemoveAllAssociatedData()
+        {
+            var hostInfo = new Host();
+            var renterInfo = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", hostInfo, renterInfo);
+            var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
+            var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, user);
+
+            user.AddUserReview(review);
+
+            user.DeleteUser(user);
+
+            Assert.IsEmpty(user.UserReviews);
+            Assert.IsNull(user.HostInfo);
+            Assert.IsNull(user.RenterInfo);
+        }
+        
     }
 }
