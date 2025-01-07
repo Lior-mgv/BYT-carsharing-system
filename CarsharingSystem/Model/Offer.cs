@@ -86,8 +86,8 @@ public class Offer
 
     public void UpdateAddress(Address oldAddress, Address newAddress)
     {
+        if(!RemoveAddress(oldAddress)) return;
         AddAddress(newAddress);
-        RemoveAddress(oldAddress);
     }
     
     public void AddOfferReview(OfferReview offerReview)

@@ -54,7 +54,7 @@ public class Address
         ArgumentNullException.ThrowIfNull(offer);
         
         var res = _offers.Remove(offer);
-        if (offer.Addresses.Contains(this))
+        if (res && offer.Addresses.Contains(this))
         {
             offer.RemoveAddress(this);
         }

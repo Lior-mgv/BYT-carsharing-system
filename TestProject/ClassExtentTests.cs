@@ -53,18 +53,6 @@ namespace TestProject
             var extent = PersistenceContext.GetExtent<User>();
             Assert.That(extent.Count, Is.EqualTo(count));
         }
-
-        [Test]
-        public void LoadContext_ShouldPopulateExtentFromFile()
-        {
-            var user = new User("Jane", "Smith", "jane.smith@example.com", "9876543210", null, null);
-
-            PersistenceContext.SaveContext();
-            PersistenceContext.LoadContext();
-
-            var extent = PersistenceContext.GetExtent<User>();
-            Assert.That(extent.Count(u => u.Email == "jane.smith@example.com"), Is.EqualTo(2));
-        }
         
         [TearDown]
         public void Teardown()

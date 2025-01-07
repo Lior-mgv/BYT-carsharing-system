@@ -62,12 +62,23 @@ public class Booking
 
     public bool DeleteDiscountCode(string code)
     {
-        throw new NotImplementedException();
+        ArgumentNullException.ThrowIfNull(code);
+        
+        if (!_discountCodes.TryGetValue(code, out var discountCode)) return false;
+        var res = _discountCodes.Remove(discountCode.Code);;
+        if (res && discountCode.Bookings.Contains(this))
+        {
+            discountCode.DeleteBooking(this);
+        }
+
+        return res;
+
     }
 
     public void UpdateDiscountCode(string oldCode, DiscountCode newDiscountCode)
     {
-        throw new NotImplementedException();
+        if(!DeleteDiscountCode(oldCode)) return;
+        AddDiscountCode(newDiscountCode);
     }
 
     public void DeleteBooking()

@@ -15,11 +15,12 @@ namespace TestProject
             var transmissionType = TransmissionType.Manual;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 10 };
             var gasVehicleInfo = new GasVehicle { FuelType = "Diesel", FuelConsumption = 15 };
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var bedLength = 6.5;
 
             var truck = new Truck(model, numOfSeats, numOfDoors, transmissionType, electricVehicleInfo, gasVehicleInfo, null, host, bedLength);
-            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, truck, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host());
+            var offer = new Offer(80, "Heavy-duty Truck Rental", 21, truck, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
             truck.Offer = offer;
 
             Assert.That(truck.Model, Is.EqualTo(model));
@@ -40,7 +41,8 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 2;
             var transmissionType = TransmissionType.Manual;
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var invalidBedLength = 0.0;
 
             Assert.Throws<ValidationException>(() =>

@@ -1,9 +1,24 @@
-﻿using CarsharingSystem.Services;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
+using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
 public class Host
 {
+    public Host(User user)
+    {
+        User = user;
+        ValidationHelpers.ValidateObject(this);
+    }
+
+    [JsonConstructor]
+    private Host()
+    {
+    }
+
+    [Required]
+    public User User { get; set; }
     private readonly List<Vehicle> _vehicles = [];
     public List<Vehicle> Vehicles => [.._vehicles];
 
@@ -89,17 +104,14 @@ public class Host
         }
     }
     
-    public void UpdateDiscountCode(DiscountCode oldDiscountCode, DiscountCode newDiscountCode)
-    {
-        if(!DeleteDiscountCode(oldDiscountCode)) return;
-        AddDiscountCode(newDiscountCode);
-    }
-    
     public bool DeleteDiscountCode(DiscountCode discountCode)
     {
         ArgumentNullException.ThrowIfNull(discountCode);
         var res = _discountCodes.Remove(discountCode);
-        discountCode.DeleteDiscountCode();
+        if (discountCode.Host == this)
+        {
+            discountCode.DeleteDiscountCode();
+        }
         return res;
     }
 
@@ -119,6 +131,7 @@ public class Host
         {
             DeleteVehicle(vehicle);
         }
-        PersistenceContext.DeleteFromExtent(host);
+
+        User.HostInfo = null;
     }
 }

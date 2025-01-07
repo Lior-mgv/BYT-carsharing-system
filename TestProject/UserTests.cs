@@ -28,7 +28,7 @@ namespace TestProject
         {
             Assert.Throws<ValidationException>(() => new User(null, "Doe", "john.doe@example.com", "1234567890", null, null));
             Assert.Throws<ValidationException>(() => new User("John", null, "john.doe@example.com", "1234567890", null, null));
-            Assert.Throws<ValidationException>(() => new User("John", "Doe", "john.doe@example.com", null, null, null));
+            Assert.Throws<ValidationException>(() => new User("John", "Doe", "john.doe@example.com", null, null,null));
         }
 
         [Test]
@@ -40,8 +40,9 @@ namespace TestProject
         [Test]
         public void IsRenter_ShouldReturnTrue_WhenRenterInfoIsProvided()
         {
-            var renterInfo = new Renter();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, renterInfo);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var renterInfo = new Renter(user, "12345");
+            user.RenterInfo = renterInfo;
 
             Assert.IsTrue(user.IsRenter);
         }
@@ -49,8 +50,9 @@ namespace TestProject
         [Test]
         public void IsHost_ShouldReturnTrue_WhenHostInfoIsProvided()
         {
-            var hostInfo = new Host();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", hostInfo, null);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var hostInfo = new Host(user);
+            user.HostInfo = hostInfo;
 
             Assert.IsTrue(user.IsHost);
         }
@@ -72,9 +74,11 @@ namespace TestProject
         [Test]
         public void DeleteUser_ShouldRemoveAllAssociatedData()
         {
-            var hostInfo = new Host();
-            var renterInfo = new Renter();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", hostInfo, renterInfo);
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var hostInfo = new Host(user);
+            var renterInfo = new Renter(user, "ABC12345");
+            user.RenterInfo = renterInfo;
+            user.HostInfo = hostInfo;
             var reviewer = new User("Jane", "Smith", "jane.smith@example.com", "0987654321", null, null);
             var review = new UserReview(DateTime.Now, 5, "Great service!", reviewer, user);
 

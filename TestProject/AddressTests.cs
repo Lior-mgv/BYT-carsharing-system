@@ -43,8 +43,14 @@ namespace TestProject
         [Test]
         public void AddOffer_ValidOffer_ShouldAddToOffersList()
         {
-            var address = new Address("New York", "Main Street", 123, "10001");
-            var host = new Host();
+            var city = "New York";
+            var street = "Main Street";
+            var buildingNumber = 123;
+            var postalCode = "10001";
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
+            var address = new Address(city, street, buildingNumber, postalCode);
+
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>{address}, host);
 
@@ -56,7 +62,8 @@ namespace TestProject
         public void AddOffer_DuplicateOffer_ShouldThrowException()
         {
             var address = new Address("New York", "Main Street", 123, "10001");
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address> {address }, host);
 
@@ -67,7 +74,8 @@ namespace TestProject
         public void RemoveOffer_ValidOffer_ShouldRemoveFromOffersList()
         {
             var address = new Address("New York", "Main Street", 123, "10001");
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>{address}, host);
 
@@ -81,7 +89,8 @@ namespace TestProject
         public void DeleteAddress_ShouldRemoveAllAssociatedOffers()
         {
             var address = new Address("New York", "Main Street", 123, "10001");
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer1 = new Offer(100.0m, "Description1", 18, vehicle, new List<Address>{address}, host);
             var offer2 = new Offer(150.0m, "Description2", 20, vehicle, new List<Address>{address}, host);
