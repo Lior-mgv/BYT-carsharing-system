@@ -8,7 +8,7 @@ public class Renter
 {
     public Renter(User user, string drivingLicenseNumber)
     {
-        this.User = user;
+        User = user;
         DrivingLicenseNumber = drivingLicenseNumber;
     }
 

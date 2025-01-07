@@ -15,7 +15,7 @@ namespace TestProject
             var transmissionType = TransmissionType.Manual;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 10 };
             var gasVehicleInfo = new GasVehicle { FuelType = "Diesel", FuelConsumption = 15 };
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
             var bedLength = 6.5;
 
@@ -41,7 +41,7 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 2;
             var transmissionType = TransmissionType.Manual;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
             var invalidBedLength = 0.0;
 

@@ -28,7 +28,7 @@ public class SerializationAndDeserializationTests
     public void Serialization_ShouldSerializeAndDeserializeCorrectly()
     {
         var vehicle = new PassengerCar();
-        var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+        var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
         var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
 
         // Serialize

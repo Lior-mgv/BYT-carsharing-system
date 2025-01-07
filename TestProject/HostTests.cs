@@ -8,7 +8,8 @@ public class HostTests
         [Test]
         public void AddVehicle_ValidVehicle_ShouldAddVehicleToList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null); 
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             host.AddVehicle(vehicle);
 
@@ -19,14 +20,16 @@ public class HostTests
         [Test]
         public void AddVehicle_NullVehicle_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.AddVehicle(null));
         }
 
         [Test]
         public void AddVehicle_DuplicateVehicle_ShouldThrowInvalidOperationException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             host.AddVehicle(vehicle);
 
@@ -36,7 +39,8 @@ public class HostTests
         [Test]
         public void DeleteVehicle_ValidVehicle_ShouldRemoveVehicleFromList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             host.AddVehicle(vehicle);
 
@@ -49,7 +53,8 @@ public class HostTests
         [Test]
         public void DeleteVehicle_NotContainedVehicle_ShouldThrowInvalidCastException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             Assert.Throws<InvalidCastException>(() => host.DeleteVehicle(vehicle));
         }
@@ -57,14 +62,16 @@ public class HostTests
         [Test]
         public void DeleteVehicle_NullVehicle_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.DeleteVehicle(null));
         }
 
         [Test]
         public void UpdateVehicle_ValidVehicles_ShouldReplaceOldVehicleWithNewOne()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var oldVehicle = new PassengerCar();
             var newVehicle = new PassengerCar();
             host.AddVehicle(oldVehicle);
@@ -79,7 +86,8 @@ public class HostTests
         [Test]
         public void AddOffer_ValidOffer_ShouldAddOfferToList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
@@ -90,13 +98,15 @@ public class HostTests
         [Test]
         public void AddOffer_NullOffer_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.AddOffer(null));
         }
 
         [Test]
         public void AddOffer_DuplicateOffer_ShouldThrowInvalidOperationException()
-        {var host = new Host();
+        {var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
@@ -106,7 +116,8 @@ public class HostTests
         [Test]
         public void DeleteOffer_ValidOffer_ShouldRemoveOfferFromList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var vehicle = new PassengerCar();
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
@@ -119,14 +130,16 @@ public class HostTests
         [Test]
         public void DeleteOffer_NullOffer_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.DeleteOffer(null));
         }
 
         [Test]
         public void AddDiscountCode_ValidDiscountCode_ShouldAddDiscountCodeToList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var discountCode = new DiscountCode("Code", DateTime.Now, DateTime.MaxValue, host);
 
             Assert.Contains(discountCode, host.DiscountCodes);
@@ -136,14 +149,16 @@ public class HostTests
         [Test]
         public void AddDiscountCode_NullDiscountCode_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.AddDiscountCode(null));
         }
 
         [Test]
         public void AddDiscountCode_DuplicateDiscountCode_ShouldThrowInvalidOperationException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var discountCode = new DiscountCode("Code", DateTime.Now, DateTime.MaxValue, host);
 
 
@@ -153,7 +168,8 @@ public class HostTests
         [Test]
         public void DeleteDiscountCode_ValidDiscountCode_ShouldRemoveDiscountCodeFromList()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var discountCode = new DiscountCode("Code", DateTime.Now, DateTime.MaxValue, host);
 
             var result = host.DeleteDiscountCode(discountCode);
@@ -165,7 +181,8 @@ public class HostTests
         [Test]
         public void DeleteDiscountCode_NullDiscountCode_ShouldThrowArgumentNullException()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             Assert.Throws<ArgumentNullException>(() => host.DeleteDiscountCode(null));
         }
 
@@ -173,7 +190,8 @@ public class HostTests
         public void DeleteHost_ShouldRemoveAllAssociationsAndDeleteHost()
         {
             var vehicle = new PassengerCar();
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
             var discountCode = new DiscountCode("Code", DateTime.Now, DateTime.MaxValue, host);
 

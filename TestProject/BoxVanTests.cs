@@ -12,7 +12,7 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Manual;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
             var boxVolume = 20.0;
 
@@ -33,7 +33,7 @@ namespace TestProject
             var numOfSeats = 3;
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Manual;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
             var invalidBoxVolume = 0.0; // Invalid box volume, must be greater than 0
 

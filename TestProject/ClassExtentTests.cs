@@ -37,7 +37,7 @@ namespace TestProject
         [Test]
         public void Add_ShouldAddObjectToExtent_WhenTypeExists()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
 
             var extent = PersistenceContext.GetExtent<User>();
             Assert.Contains(user, extent);
@@ -46,7 +46,7 @@ namespace TestProject
         [Test]
         public void Add_ShouldNotAllowExternalModification()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var count = PersistenceContext.GetExtent<User>()!.Count;
             PersistenceContext.AddToExtent(user); //trying to add the object for the second time
 

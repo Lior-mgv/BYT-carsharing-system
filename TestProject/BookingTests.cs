@@ -12,7 +12,7 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(3);
             var status = BookingStatus.Pending;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user,"12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);
@@ -34,7 +34,7 @@ namespace TestProject
             var endDate = startDate.AddDays(3);
             var totalPrice = 100m;
             var status = BookingStatus.Pending;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);
@@ -56,7 +56,7 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(-3); // End date before start date
             var status = BookingStatus.Pending;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);
@@ -78,7 +78,7 @@ namespace TestProject
             var endDate = new DateTime(2023, 10, 5); // 4 days
             var pricePerDay = 100m;
             var status = BookingStatus.Pending;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);
@@ -97,7 +97,7 @@ namespace TestProject
             var startDate = DateTime.Now;
             var endDate = startDate.AddDays(-3); // End date before start date
             var status = BookingStatus.Pending;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);

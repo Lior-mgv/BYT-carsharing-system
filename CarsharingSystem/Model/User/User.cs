@@ -65,7 +65,7 @@ public class User
 
         _userReviews.Add(review);
 
-        if (review.Reviewer != this)
+        if (!review.Reviewer.Equals(this))
         {
             review.Reviewer = this;
         }
@@ -77,11 +77,11 @@ public class User
         var res = _userReviews.Remove(review);
         if (res)
         {
-            if (review.Reviewer == this)
+            if (review.Reviewer.Equals(this))
             {
                 review.Reviewee?.RemoveUserReview(review);
             }
-            else if (review.Reviewee == this)
+            else if (review.Reviewee.Equals(this))
             {
                 review.Reviewer?.RemoveUserReview(review);
             }
@@ -91,8 +91,12 @@ public class User
 
     public void UpdateUserReview(UserReview oldReview, UserReview newReview)
     {
+        if (!RemoveUserReview(oldReview))
+        {
+            return;
+        }
+
         AddUserReview(newReview);
-        RemoveUserReview(oldReview);
     }
 
     public void DeleteUser(User user)

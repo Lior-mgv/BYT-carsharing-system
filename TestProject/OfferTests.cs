@@ -14,7 +14,7 @@ namespace TestProject
             var minimalAge = 18;
             var vehicle = new PassengerCar();
             var addresses = new List<Address>{new ("city", "Street", 1, "PostalCode")};
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
 
             var offer = new Offer(pricePerDay, description, minimalAge, vehicle, addresses, host);
@@ -35,7 +35,7 @@ namespace TestProject
             var vehicle = new PassengerCar();
 
             // Missing PricePerDay
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             Assert.Throws<ValidationException>(() => new Offer(0, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user)));
 
             // Missing Vehicle
@@ -49,7 +49,7 @@ namespace TestProject
         public void Constructor_InvalidPricePerDay_ShouldThrowValidationException()
         {
             var vehicle = new PassengerCar();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             Assert.Throws<ValidationException>(() => new Offer(-1, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user)));
         }
 
@@ -57,14 +57,15 @@ namespace TestProject
         public void Constructor_InvalidMinimalAge_ShouldThrowValidationException()
         {
             var vehicle = new PassengerCar();
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             Assert.Throws<ValidationException>(() => new Offer(100, "Description", 12, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user)));
             Assert.Throws<ValidationException>(() => new Offer(100, "Description", 30, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user)));
         }
         [Test]
         public void AddAddress_ValidAddress_ShouldAddToAddresses()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
             var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
 
             offer.AddAddress(newAddress);
@@ -76,8 +77,9 @@ namespace TestProject
         [Test]
         public void AddAddress_AlreadyExistingAddress_ShouldThrowInvalidOperationException()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var address = new Address("City", "Street", 1, "PostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, new Host(user));
 
             Assert.Throws<InvalidOperationException>(() => offer.AddAddress(address));
         }
@@ -85,8 +87,9 @@ namespace TestProject
         [Test]
         public void RemoveAddress_ValidAddress_ShouldRemoveFromAddresses()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var address = new Address("City", "Street", 1, "PostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, new Host(user));
 
             var removed = offer.RemoveAddress(address);
 
@@ -98,7 +101,8 @@ namespace TestProject
         [Test]
         public void RemoveAddress_NullAddress_ShouldThrowArgumentNullException()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
 
             Assert.Throws<ArgumentNullException>(() => offer.RemoveAddress(null));
         }
@@ -106,8 +110,9 @@ namespace TestProject
         [Test]
         public void AddOfferReview_ValidReview_ShouldAddToReviews()
         {
-            var renter = new Renter();
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var renter = new Renter(user, "ABC12345");
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
             var review = new OfferReview(DateTime.Now, 5, 5, 5, 5, "Comment", renter, offer);
 
             Assert.That(offer.OfferReviews, Contains.Item(review));
@@ -117,8 +122,9 @@ namespace TestProject
         [Test]
         public void AddOfferReview_AlreadyExistingReview_ShouldThrowInvalidOperationException()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
+            var renter = new Renter(user, "ABC12345");
             var review = new OfferReview(DateTime.Now,5, 5,5,5,"Comment", renter, offer);
 
             Assert.Throws<InvalidOperationException>(() => offer.AddOfferReview(review));
@@ -127,8 +133,9 @@ namespace TestProject
         [Test]
         public void RemoveOfferReview_ValidReview_ShouldRemoveFromReviews()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
+            var renter = new Renter(user, "ABC12345");
             var review = new OfferReview(DateTime.Now,5, 5,5,5,"Comment", renter, offer);
 
             var removed = offer.RemoveOfferReview(review);
@@ -140,7 +147,8 @@ namespace TestProject
         [Test]
         public void RemoveOfferReview_NullReview_ShouldThrowArgumentNullException()
         {
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
 
             Assert.Throws<ArgumentNullException>(() => offer.RemoveOfferReview(null));
         }
@@ -148,9 +156,10 @@ namespace TestProject
         [Test]
         public void UpdateAddress_ValidAddresses_ShouldUpdateAddresses()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var oldAddress = new Address("City", "Street", 1, "PostalCode");
             var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host(user));
 
             offer.UpdateAddress(oldAddress, newAddress);
 
@@ -163,9 +172,10 @@ namespace TestProject
         [Test]
         public void UpdateAddress_ValidAddresses_ShouldUpdateSuccessfully()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var oldAddress = new Address("OldCity", "OldStreet", 1, "OldPostalCode");
             var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host(user));
 
             offer.UpdateAddress(oldAddress, newAddress);
 
@@ -178,8 +188,9 @@ namespace TestProject
         [Test]
         public void UpdateAddress_NullOldAddress_ShouldThrowArgumentNullException()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var newAddress = new Address("NewCity", "NewStreet", 2, "NewPostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { new Address("City", "Street", 1, "PostalCode") }, new Host(user));
 
             Assert.Throws<ArgumentNullException>(() => offer.UpdateAddress(null, newAddress));
         }
@@ -187,8 +198,9 @@ namespace TestProject
         [Test]
         public void UpdateAddress_NullNewAddress_ShouldThrowArgumentNullException()
         {
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var oldAddress = new Address("OldCity", "OldStreet", 1, "OldPostalCode");
-            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host());
+            var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { oldAddress }, new Host(user));
 
             Assert.Throws<ArgumentNullException>(() => offer.UpdateAddress(oldAddress, null));
         }
@@ -197,10 +209,11 @@ namespace TestProject
         public void DeleteOfferShouldDeleteAssociations()
         {
             var address = new Address("City", "Street", 1, "PostalCode");
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var host = new Host(user);
             var offer = new Offer(100, "Description", 18, new PassengerCar(), new List<Address> { address }, host);
-            var review = new OfferReview(DateTime.Now, 5, 5, 5, 5, "Comment", new Renter(), offer);
-            var booking = new Booking(DateTime.Now, DateTime.MaxValue, BookingStatus.Pending, new Renter(), offer);
+            var review = new OfferReview(DateTime.Now, 5, 5, 5, 5, "Comment", new Renter(user, "ABC12345"), offer);
+            var booking = new Booking(DateTime.Now, DateTime.MaxValue, BookingStatus.Pending, new Renter(user, "ABC12345"), offer);
 
             // Act
             offer.DeleteOffer(offer);

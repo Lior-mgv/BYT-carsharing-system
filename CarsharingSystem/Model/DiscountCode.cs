@@ -73,9 +73,13 @@ public class DiscountCode
         if(!DeleteBooking(oldBooking)) return;
         AddBooking(newBooking);
     }
+    
     public void DeleteDiscountCode()
     {
-        Host.DeleteDiscountCode(this);
+        if (Host.DiscountCodes.Contains(this))
+        {
+            Host.DeleteDiscountCode(this);
+        }
         foreach (var booking in _bookings.ToList())
         {
             booking.DeleteDiscountCode(_code);

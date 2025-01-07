@@ -17,7 +17,7 @@ namespace TestProject
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
             GasVehicle? gasVehicleInfo = null;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
             var offer = new Offer(120.5m, "Electric car rental", 25, new PassengerCar(), new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
 
@@ -41,7 +41,7 @@ namespace TestProject
             var numOfDoors = 4;
             var transmissionType = TransmissionType.Automatic;
             var electricVehicleInfo = new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 };
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var host = new Host(user);
 
             // Missing Model
@@ -60,7 +60,7 @@ namespace TestProject
         [Test]
         public void IsElectric_ShouldReturnTrue_WhenElectricVehicleInfoIsNotNull()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, new ElectricVehicle { BatteryCapacity = 100, ChargingTime = 5 }, null, null, new Host(user), 10.0);
             Assert.IsTrue(vehicle.IsElectric);
         }
@@ -68,7 +68,7 @@ namespace TestProject
         [Test]
         public void IsGas_ShouldReturnTrue_WhenGasVehicleInfoIsNotNull()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var vehicle = new Truck("Toyota Camry", 4, 4, TransmissionType.Automatic, null, new GasVehicle { FuelType = "Petrol", FuelConsumption = 10 }, null, new Host(user), 10.0);
             Assert.IsTrue(vehicle.IsGas);
         }
@@ -76,7 +76,7 @@ namespace TestProject
         [Test]
         public void AdditionalFeatures_ShouldBeEmptyByDefault()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(user), 10.0);
             Assert.IsEmpty(vehicle.AdditionalFeatures);
         }
@@ -84,7 +84,7 @@ namespace TestProject
         [Test]
         public void AddFeature_ShouldAddFeatureToList()
         {
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, new Host(user), 10.0);
             vehicle.AdditionalFeatures.Add("GPS");
             Assert.Contains("GPS", vehicle.AdditionalFeatures);
@@ -93,7 +93,8 @@ namespace TestProject
         [Test]
         public void DeleteVehicleShouldDeleteAllTheAssociationsWithIt()
         {
-            var host = new Host();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+var host = new Host(user);
             var vehicle = new Truck("Tesla Model S", 4, 4, TransmissionType.Automatic, null, null, null, host, 10.0);
             var offer = new Offer(100, "Description", 18, vehicle, new List<Address> { new Address("City", "Street", 1, "PostalCode") }, host);
             

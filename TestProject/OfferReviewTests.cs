@@ -14,7 +14,7 @@ namespace TestProject
             var convenienceScore = 3;
             var communicationScore = 4;
             var comment = "Great experience!";
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
@@ -36,7 +36,7 @@ namespace TestProject
         public void Constructor_MissingRequiredFields_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
@@ -52,7 +52,7 @@ namespace TestProject
         public void Constructor_InvalidScore_ShouldThrowValidationException()
         {
             var date = DateTime.Now;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
@@ -78,7 +78,7 @@ namespace TestProject
         public void AverageScore_ShouldCalculateCorrectly()
         {
             var date = DateTime.Now;
-            var user = new User("John", "Doe", "john.doe@example.com", "1234567890");
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var offer = new Offer(100, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, new Host(user));
@@ -93,9 +93,11 @@ namespace TestProject
         {
             // Arrange
             var date = DateTime.Now;
-            var renter = new Renter();
+            var user = new User("John", "Doe", "john.doe@example.com", "1234567890", null, null);
+            var renter = new Renter(user, "ABC12345");
             var vehicle = new PassengerCar();
-            var offer = new Offer(100, "Description", 18, vehicle, new List<Address> { new Address("city", "Street", 1, "PostalCode") }, new Host());
+            var host = new Host(user);
+            var offer = new Offer(100, "Description", 18, vehicle, new List<Address> { new Address("city", "Street", 1, "PostalCode")}, host);
             var offerReview = new OfferReview(date, 5, 4, 3, 2, "Great experience", renter, offer);
 
             // Act

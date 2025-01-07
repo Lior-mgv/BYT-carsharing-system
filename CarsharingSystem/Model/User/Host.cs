@@ -104,17 +104,14 @@ public class Host
         }
     }
     
-    public void UpdateDiscountCode(DiscountCode oldDiscountCode, DiscountCode newDiscountCode)
-    {
-        if(!DeleteDiscountCode(oldDiscountCode)) return;
-        AddDiscountCode(newDiscountCode);
-    }
-    
     public bool DeleteDiscountCode(DiscountCode discountCode)
     {
         ArgumentNullException.ThrowIfNull(discountCode);
         var res = _discountCodes.Remove(discountCode);
-        discountCode.DeleteDiscountCode();
+        if (discountCode.Host == this)
+        {
+            discountCode.DeleteDiscountCode();
+        }
         return res;
     }
 
