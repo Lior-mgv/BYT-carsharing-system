@@ -9,6 +9,7 @@ public class Host
     public Host(User user)
     {
         User = user;
+        user.HostInfo = this;
         ValidationHelpers.ValidateObject(this);
     }
 

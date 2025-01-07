@@ -101,9 +101,27 @@ namespace TestProject
             var renter = new Renter(user, "12345");
             var vehicle = new PassengerCar();
             var host = new Host(user);
-            var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
+            var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>{new Address("city", "Street", 1, "PostalCode")}, host);
 
             Assert.Throws<ValidationException>(() => new Booking(startDate, endDate, status, renter, offer));
+        }
+
+        [Test]
+        public void DeleteBookingShouldDeleteAssociatdStuff()
+        {
+            var user = new User("Cool", "Guy", "coolguy@cool.com", "+484448292", null, null);
+            var renter = new Renter(user, "123123");
+            var host = new Host(user);
+            var offer = new Offer(12, "some description shi", null, new PassengerCar(),
+                new List<Address> { new Address("some city", "some street", 2, "213") }, host);
+            var booking = new Booking(DateTime.Now, DateTime.MaxValue, BookingStatus.Confirmed, renter, offer);
+            Assert.That(offer.Bookings, Does.Contain(booking));
+            Assert.That(renter.Bookings, Does.Contain(booking));
+            
+            booking.DeleteBooking();
+            
+            Assert.That(offer.Bookings, Does.Not.Contain(booking));
+            Assert.That(renter.Bookings, Does.Not.Contain(booking));
         }
     }
 }

@@ -9,6 +9,7 @@ public class Renter
     public Renter(User user, string drivingLicenseNumber)
     {
         User = user;
+        user.RenterInfo = this;
         DrivingLicenseNumber = drivingLicenseNumber;
     }
 
