@@ -19,8 +19,8 @@ public abstract class Vehicle
     public TransmissionType TransmissionType { get; set; }
     public List<string> AdditionalFeatures { get; set; } = [];
 
-    public ElectricVehicle? ElectricVehicleInfo { get; set; }
-    public GasVehicle? GasVehicleInfo { get; set; }
+    public ElectricVehicle? ElectricVehicleInfo { get; init; }
+    public GasVehicle? GasVehicleInfo { get; init; }
 
     public bool IsElectric => ElectricVehicleInfo != null;
     public bool IsGas => GasVehicleInfo != null;

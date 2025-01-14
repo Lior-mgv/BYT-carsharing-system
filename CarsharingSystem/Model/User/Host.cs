@@ -4,7 +4,7 @@ using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
-public class Host
+public class Host : IHost
 {
     public Host(User user)
     {
@@ -116,14 +116,14 @@ public class Host
         return res;
     }
 
-    public void DeleteHost(Host host)
+    public void DeleteHost()
     {
-        foreach (var offer in host._offers.ToList())
+        foreach (var offer in _offers.ToList())
         {
             DeleteOffer(offer);
         }
 
-        foreach (var code in host._discountCodes.ToList())
+        foreach (var code in _discountCodes.ToList())
         {
             DeleteDiscountCode(code);
         }

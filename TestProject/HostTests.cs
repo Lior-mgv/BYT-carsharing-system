@@ -195,7 +195,7 @@ public class HostTests
             var offer = new Offer(100.0m, "Description", 18, vehicle, new List<Address>(){new Address("city", "Street", 1, "PostalCode")}, host);
             var discountCode = new DiscountCode("Code", DateTime.Now, DateTime.MaxValue, host);
 
-            host.DeleteHost(host);
+            host.DeleteHost();
 
             Assert.IsEmpty(host.Vehicles);
             Assert.IsEmpty(host.Offers);

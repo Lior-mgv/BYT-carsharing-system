@@ -100,7 +100,7 @@ namespace TestProject
             var review = new OfferReview(DateTime.Now, 5, 4, 3, 4, "Great!", renter, offer);
             
 
-            renter.DeleteRenter(renter);
+            renter.DeleteRenter();
 
             Assert.That(renter.Bookings, Is.Empty);
             Assert.That(renter.OfferReviews, Is.Empty);

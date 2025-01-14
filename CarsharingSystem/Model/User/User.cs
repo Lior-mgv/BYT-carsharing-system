@@ -15,8 +15,8 @@ public class User
     [Required]
     public string PhoneNumber { get; set; }
 
-    public Host? HostInfo { get; set; }
-    public Renter? RenterInfo { get; set; }
+    public IHost? HostInfo { get; set; }
+    public IRenter? RenterInfo { get; set; }
 
     public bool IsRenter => RenterInfo != null;
     public bool IsHost => HostInfo != null;
@@ -32,7 +32,7 @@ public class User
     {
         if (obj is User other)
         {
-            return this.Email == other.Email;
+            return Email == other.Email;
         }
         return false;
     }
@@ -103,12 +103,12 @@ public class User
     {
         if (user.IsHost)
         {
-            user.HostInfo?.DeleteHost(user.HostInfo);
+            user.HostInfo?.DeleteHost();
         }
 
         if (user.IsRenter)
         {
-            user.RenterInfo?.DeleteRenter(user.RenterInfo);
+            user.RenterInfo?.DeleteRenter();
         }
         foreach (var review in user._userReviews.ToList())
         {
@@ -117,4 +117,90 @@ public class User
 
         PersistenceContext.DeleteFromExtent(user);
     }
+
+    #region Host functionality
+    
+    public void AddVehicle(Vehicle vehicle)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        HostInfo?.AddVehicle(vehicle);
+    }
+
+    public bool DeleteVehicle(Vehicle vehicle)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        return HostInfo?.DeleteVehicle(vehicle) ?? false;
+    }
+
+    public void UpdateVehicle(Vehicle oldVehicle, Vehicle newVehicle)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        HostInfo?.UpdateVehicle(oldVehicle, newVehicle);
+    }
+
+    public void AddOffer(Offer offer)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        HostInfo?.AddOffer(offer);
+    }
+
+    public bool DeleteOffer(Offer offer)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        return HostInfo?.DeleteOffer(offer) ?? false;
+    }
+
+    public void AddDiscountCode(DiscountCode discountCode)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        HostInfo?.AddDiscountCode(discountCode);
+    }
+
+    public bool DeleteDiscountCode(DiscountCode discountCode)
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        return HostInfo?.DeleteDiscountCode(discountCode) ?? false;
+    }
+
+    public void DeleteHost()
+    {
+        if(!IsHost) throw new InvalidOperationException("The user is not a host");
+        HostInfo?.DeleteHost();
+    }
+    #endregion
+
+    #region Renter functionality
+
+    public void AddOfferReview(OfferReview offerReview)
+    {
+        if(!IsRenter) throw new InvalidOperationException("The user is not a renter");
+        RenterInfo?.AddOfferReview(offerReview);
+    }
+
+    public bool RemoveOfferReview(OfferReview review)
+    {
+        if(!IsRenter) throw new InvalidOperationException("The user is not a renter");
+        return RenterInfo?.RemoveOfferReview(review) ?? false;
+    }
+
+    public void AddBooking(Booking booking)
+    {
+        if(!IsRenter) throw new InvalidOperationException("The user is not a renter");
+        RenterInfo?.AddBooking(booking);
+    }
+
+    public bool RemoveBooking(Booking booking)
+    {
+        if(!IsRenter) throw new InvalidOperationException("The user is not a renter");
+        return RenterInfo?.RemoveBooking(booking) ?? false;
+    }
+
+    public void DeleteRenter(Renter renter)
+    {
+        if(!IsRenter) throw new InvalidOperationException("The user is not a renter");
+        RenterInfo?.DeleteRenter();
+    }
+
+    #endregion
+    
 }

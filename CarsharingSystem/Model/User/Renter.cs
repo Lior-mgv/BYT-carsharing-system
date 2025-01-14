@@ -1,10 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
-using CarsharingSystem.Services;
 
 namespace CarsharingSystem.Model;
 
-public class Renter
+public class Renter : IRenter
 {
     public Renter(User user, string drivingLicenseNumber)
     {
@@ -79,16 +78,16 @@ public class Renter
     }
     
     
-    public void DeleteRenter(Renter renter)
+    public void DeleteRenter()
     {
-        if (renter == null) throw new ArgumentNullException(nameof(renter));
+        if (this == null) throw new ArgumentNullException();
         
-        foreach (var booking in renter.Bookings.ToList())
+        foreach (var booking in Bookings.ToList())
         {
             RemoveBooking(booking);
         }
 
-        foreach (var review in renter.OfferReviews.ToList())
+        foreach (var review in OfferReviews.ToList())
         {
             RemoveOfferReview(review);
         }
